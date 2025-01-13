@@ -1,5 +1,6 @@
 "use client"
 import { Boxes } from "@/components/ui/BackgroundBoxes";
+import DotPattern from "@/components/ui/DotPattern";
 import { Spotlight } from "@/components/ui/Spotlight";
 import {
   TextRevealCard,
@@ -7,18 +8,25 @@ import {
   TextRevealCardTitle,
 } from "@/components/ui/TextRevealingCard.jsx";
 import { cn } from "@/lib/utils";
+
 export default function Home() {
   return (
     <div>
     <div
-      className="h-[50rem] w-full dark:bg-black min-h-screen bg-grid-white/[0.2] pt-[25vh] relative flex flex-col items-center justify-center">
+      className="h-[50rem] w-full sm:flex sm:items-center sm:justify-center bg-black antialiased overflow-hidden pt-[25vh] relative flex flex-col items-center justify-center">
       {/* Radial gradient for the container to give a faded look */}
       <Spotlight
         className="-top-40 left-0 md:left-60 md:-top-20"
         fill="white"
       />
-      <div
-        className="absolute pointer-events-none inset-0 flex gap-4 items-center justify-center bg-black [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"></div>
+      <DotPattern
+        className={cn(
+          "[mask-image:radial-gradient(300px_circle_at_center,white,transparent)]",
+        )}
+      />
+      {/* <div
+        className="absolute pointer-events-none inset-0 flex gap-4 items-center justify-center bg-black [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"></div> */}
+        {/* <div className="absolute bottom-0 left-0 right-0 top-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]"></div> */}
       <div className="flex ">
       <p
         className="text-4xl sm:text-7xl font-bold relative z-20 bg-clip-text text-transparent bg-gradient-to-b from-neutral-200 to-neutral-500 py-8">
@@ -41,11 +49,10 @@ export default function Home() {
       </TextRevealCard>
     </div>
       </div>
-      <div className="grid grid-cols-3 grid-rows-1 p-8 gap-4 ">
-
+      <div className="grid grid-cols-1 md:grid-cols-3 grid-rows-3 md:grid-rows-1 p-8 bg-black gap-4">
       {/* grid 1 */}
 
-      <div className="h-96 relative w-full overflow-hidden bg-slate-900 flex flex-col items-center justify-center rounded-lg">
+      <div className="h-96 relative w-full overflow-hidden bg-black flex flex-col items-center justify-center rounded-lg">
       <div className="absolute inset-0 w-full h-full bg-slate-900 z-20 [mask-image:radial-gradient(transparent,white)] pointer-events-none" />
  
       {/* <Boxes /> */}
@@ -60,7 +67,7 @@ export default function Home() {
 
     {/* grid 2  */}
 
-    <div className="h-96 relative w-full overflow-hidden bg-slate-900 flex flex-col items-center justify-center rounded-lg">
+    <div className="h-96 relative w-full overflow-hidden bg-black flex flex-col items-center justify-center rounded-lg">
       <div className="absolute inset-0 w-full h-full bg-slate-900 z-20 [mask-image:radial-gradient(transparent,white)] pointer-events-none" />
  
       {/* <Boxes /> */}
@@ -75,7 +82,7 @@ export default function Home() {
 
     {/* grid 3  */}
 
-    <div className="h-96 relative w-full overflow-hidden bg-slate-900 flex flex-col items-center justify-center rounded-lg">
+    <div className="h-96 relative w-full overflow-hidden bg-black flex flex-col items-center justify-center rounded-lg">
       <div className="absolute inset-0 w-full h-full bg-slate-900 z-20 [mask-image:radial-gradient(transparent,white)] pointer-events-none" />
  
       {/* <Boxes /> */}
