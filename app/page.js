@@ -1,101 +1,93 @@
-import Image from "next/image";
-
+"use client"
+import { Boxes } from "@/components/ui/BackgroundBoxes";
+import { Spotlight } from "@/components/ui/Spotlight";
+import {
+  TextRevealCard,
+  TextRevealCardDescription,
+  TextRevealCardTitle,
+} from "@/components/ui/TextRevealingCard.jsx";
+import { cn } from "@/lib/utils";
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.js
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <div>
+    <div
+      className="h-[50rem] w-full dark:bg-black min-h-screen bg-grid-white/[0.2] pt-[25vh] relative flex flex-col items-center justify-center">
+      {/* Radial gradient for the container to give a faded look */}
+      <Spotlight
+        className="-top-40 left-0 md:left-60 md:-top-20"
+        fill="white"
+      />
+      <div
+        className="absolute pointer-events-none inset-0 flex gap-4 items-center justify-center bg-black [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"></div>
+      <div className="flex ">
+      <p
+        className="text-4xl sm:text-7xl font-bold relative z-20 bg-clip-text text-transparent bg-gradient-to-b from-neutral-200 to-neutral-500 py-8">
+        Buy me a COFFEE 
+      </p>
+      <span><img src='Cup.gif' width={100}/></span>
+      </div>
+    <div className="flex items-center justify-center h-fit py-4 rounded-2xl w-full">
+      <TextRevealCard
+        text="You know the business"
+        revealText="I know the chemistry "
+      >
+        <TextRevealCardTitle>
+        A crowdfunding platform for creators to fund their projects.
+        </TextRevealCardTitle>
+        <TextRevealCardDescription>
+          This is a text reveal card. Hover over the card to reveal the hidden
+          text.
+        </TextRevealCardDescription>
+      </TextRevealCard>
+    </div>
+      </div>
+      <div className="grid grid-cols-3 grid-rows-1 p-8 gap-4 ">
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      {/* grid 1 */}
+
+      <div className="h-96 relative w-full overflow-hidden bg-slate-900 flex flex-col items-center justify-center rounded-lg">
+      <div className="absolute inset-0 w-full h-full bg-slate-900 z-20 [mask-image:radial-gradient(transparent,white)] pointer-events-none" />
+ 
+      {/* <Boxes /> */}
+      <img className="bg-slate-400 relative rounded-full p-2 m-2 text-black" width={88} src="Man.gif" alt="" />
+      <h1 className={cn("md:text-4xl text-xl text-white relative z-20")}>
+      Fans want to help
+      </h1>
+      <p className="text-center mt-2 text-neutral-300 relative z-20">
+      Your fans are available to support you
+      </p>
+    </div>
+
+    {/* grid 2  */}
+
+    <div className="h-96 relative w-full overflow-hidden bg-slate-900 flex flex-col items-center justify-center rounded-lg">
+      <div className="absolute inset-0 w-full h-full bg-slate-900 z-20 [mask-image:radial-gradient(transparent,white)] pointer-events-none" />
+ 
+      {/* <Boxes /> */}
+      <img className="bg-slate-400 relative rounded-full p-2 m-2 text-black" width={88} src="Coin.gif" alt="" />
+      <h1 className={cn("md:text-4xl text-xl text-white relative z-20")}>
+      Fans want to contribute
+      </h1>
+      <p className="text-center mt-2 text-neutral-300 relative z-20">
+      Your fans are willing to contribute financially
+      </p>
+    </div>
+
+    {/* grid 3  */}
+
+    <div className="h-96 relative w-full overflow-hidden bg-slate-900 flex flex-col items-center justify-center rounded-lg">
+      <div className="absolute inset-0 w-full h-full bg-slate-900 z-20 [mask-image:radial-gradient(transparent,white)] pointer-events-none" />
+ 
+      {/* <Boxes /> */}
+      <img className="bg-slate-400 relative rounded-full p-2 m-2 text-black" width={88} src="Group.gif" alt="" />
+      <h1 className={cn("md:text-4xl text-xl text-white relative z-20")}>
+      Fans want to collaborate
+      </h1>
+      <p className="text-center mt-2 text-neutral-300 relative z-20">
+      Your fans are ready to collaborate with you
+      </p>
+    </div>
+      </div>
     </div>
   );
 }
