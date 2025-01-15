@@ -1,9 +1,11 @@
+"use client"
 import Link from 'next/link'
 import React from 'react'
-
-
+import { useSession, signIn , signOut } from 'next-auth/react'
 
 export const Navbar = () => {
+  const { data: session } = useSession()
+  
   return (
     <div className="flex flex-wrap items-center justify-between bg-black p-2">
       {/* Logo Section */}
