@@ -1,5 +1,6 @@
 'use client'
 import { useSession, signOut, signIn } from "next-auth/react";
+import Link from "next/link";
 import React, { useState } from "react";
 
 export const Dropbox = () => {
@@ -57,12 +58,12 @@ export const Dropbox = () => {
           aria-labelledby="dropdownAvatarNameButton"
         >
           <li>
-            <a
-              href="#"
+            <Link
+              href="/dashboard"
               className="block px-4 py-2  hover:bg-gray-600 hover:rounded-sm hover:text-white"
             >
               Dashboard
-            </a>
+            </Link>
           </li>
           <li>
             <a

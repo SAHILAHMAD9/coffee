@@ -9,6 +9,8 @@ import {
 } from "@tabler/icons-react";
 import { useSession, signIn, signOut } from 'next-auth/react'
 import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
+import { LampContainer } from "@/components/ui/LampDemo";
 
 export default function page() {
     const { data: session } = useSession();
@@ -38,9 +40,20 @@ export default function page() {
 
     // const [showPassword, setSetshowPassword] = useState(false);
     return (
-        <div className="bg-black w-full min-h-screen flex justify-center p-2 items-center ">
+        <div className="bg-black w-full min-h-screen flex justify-center items-center ">
+        <LampContainer className='pt-40 sm:pt-44 md:pt-44 '>
+                    <motion.div
+                        initial={{ opacity: 0.5, y: 100 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{
+                            delay: 0.3,
+                            duration: 0.8,
+                            ease: "easeInOut",
+                        }}
+                        className="relative md:mt-40 sm:mt-44 mt-20 signup bg-gradient-to-br from-slate-300 to-slate-500 rounded-2xl w-[20rem] sm:w-[28rem] md:w-[35rem] text-transparent"
+                    >
             <div
-                className="max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-black">
+                className=" w-full mx-auto rounded-2xl p-4 md:p-8 shadow-input bg-black">
                 <h2 className="font-bold text-2xl text-neutral-200">
                     Welcome
                 </h2>
@@ -103,6 +116,8 @@ export default function page() {
                 </div>
 
             </div>
+            </motion.div>
+                </LampContainer>
         </div>
     );
 }
