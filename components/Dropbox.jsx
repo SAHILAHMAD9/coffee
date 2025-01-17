@@ -1,14 +1,14 @@
 'use client'
-import { useSession } from "next-auth/react";
-import React from "react";
-import { useState } from "react";
+import { useSession, signOut, signIn } from "next-auth/react";
+import React, { useState } from "react";
+
 export const Dropbox = () => {
-    const {data : session } = useSession();
-    const [showDropDown, setshowDropDown] = useState(false);
+  const { data: session } = useSession();
+  const [showDropDown, setshowDropDown] = useState(false);
   return (
-    <div className="h-full flex flex-col bg-black z- 20 min- w-50 gap-2  items-center rounded-full m-1 absolute left-0 top-0 ">
+    <div className="h-full flex flex-col bg -black z- 20 min-w-50 gap-2  items-center rounded-full m-1 relative left-0 top-0 ">
       <button
-      onClick={()=> setshowDropDown(!showDropDown)}
+        onClick={() => setshowDropDown(!showDropDown)}
         id="dropdownAvatarNameButton"
         data-dropdown-toggle="dropdownAvatarName"
         className="flex items-center text-sm pe-1 font-medium rounded-full w-full md:me-0  text-white"
@@ -20,7 +20,7 @@ export const Dropbox = () => {
           src={session.user.image}
           alt="user photo"
         />
-       <div className="flex items-center justify-center w-auto"> {session.user.name}</div>
+        <div className="flex items-center justify-center w-auto"> {session.user.name}</div>
         <svg
           className="w-2.5 h-2.5 ms-3"
           aria-hidden="true"
@@ -41,39 +41,43 @@ export const Dropbox = () => {
       {/* Dropdown menu */}
       <div
         id="dropdownAvatarName"
-        className={`z-10 ${showDropDown ? "":'hidden'} rounded-lg bg-gray-700 shadow min-w-50 `}
+        onBlur={() => {
+          setTimeout(() => {
+            setshowDropDown(false)
+          }, 100);
+        }}
+        className={`z-10 ${showDropDown ? "" : 'hidden'} divide-y absolute top-10 rounded-lg p-0 left-0 m-0 bg-gray-700 shadow min-w-44 `}
       >
         <div className="px-4 py-3 text-sm text-white">
           <div className="font-medium">Pro User</div>
           <div className="truncate">{session.user.email}</div>
         </div>
         <ul
-          className="py-2 text-sm text-gray-200"
+          className="py- text-md text-gray-200"
           aria-labelledby="dropdownAvatarNameButton"
         >
           <li>
             <a
               href="#"
-              className="block px-4 py-2  hover:bg-gray-600 hover:text-white"
+              className="block px-4 py-2  hover:bg-gray-600 hover:rounded-sm hover:text-white"
             >
               Dashboard
             </a>
           </li>
           <li>
             <a
-              href="#"
-              className="block px-4 py-2  hover:bg-gray-600 hover:text-white"
+              className="block px-4 py-2  hover:bg-gray-600 hover:rounded-sm hover:text-white"
             >
               Settings
             </a>
           </li>
           <li>
-            <a
-              href="#"
-              className="block px-4 py-2 hover:bg-gray-600 hover:text-white"
+            <div
+              onClick={() => signOut()}
+              className="block px-4 py-2  text-xl fo nt-semibold hover:bg-gray-600 hover:rounded-sm hover:text-white"
             >
-              Earnings
-            </a>
+              Log Out
+            </div>
           </li>
         </ul>
       </div>

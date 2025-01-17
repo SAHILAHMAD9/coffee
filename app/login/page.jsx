@@ -1,23 +1,21 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Label from "@/components/ui/Label";
 import Input from "@/components/ui/Input";
 import { cn } from "@/lib/utils";
-import {
-    IconBrandGithub,
-    IconBrandGoogle,
-} from "@tabler/icons-react";
+import { IconBrandGithub, IconBrandGoogle } from "@tabler/icons-react";
 import { useSession, signIn, signOut } from 'next-auth/react'
-import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function page() {
     const { data: session } = useSession();
     console.log(session);
-
     const [Form, setForm] = useState({
         email: "",
         password: ""
     })
+    const router = useRouter();
+
     function changeHandler(event) {
         const { name, value } = event.target;
         setForm((prev) => ({
@@ -25,6 +23,14 @@ export default function page() {
             [name]: value,
         }));
     }
+
+    useEffect(() => {
+        document.title = "Login - Get Me A Chai"
+        console.log(session)
+        if (session) {
+            router.push('/dashboard');
+        }
+    }, [session])
 
     // const [showPassword, setSetshowPassword] = useState(false);
     return (
@@ -36,7 +42,7 @@ export default function page() {
                         Welcome
                     </h2>
                     <p className=" text-sm max-w-sm mt-2 text-neutral-300">
-                        Sign Up to Buy me a COFFEE
+                        Log In to Buy me a COFFEE
                     </p>
                     <form className="my-8" >
                         <LabelInputContainer className="mb-4">
@@ -45,7 +51,8 @@ export default function page() {
                         </LabelInputContainer>
                         <LabelInputContainer className="mb-4">
                             <Label className='text-white' htmlFor="password">Password</Label>
-                            <Input onChange={changeHandler} name="password" value={Form.password} id="password" placeholder="••••••••" type="password" autoComplete="new-password" />
+                            <Input onChange={changeHandler} name="password" value={Form.password} id="password" placeholder="••••••••" type="password" autoComplete="new-password" >
+                            </Input>
                         </LabelInputContainer>
 
                         <button

@@ -8,17 +8,19 @@ export const Navbar = () => {
   const { data: session } = useSession()
 
   return (
-    <div className="flex flex-wrap items-center justify-between bg-[#28282B] p-2">
+    <div className="flex flex-wrap items-center justify-between bg-[#28282B] md:p-1 p-2">
       {/* Logo Section */}
-      <div className="flex items-center justify-center text-2xl sm:text-3xl md:text-4xl font-bold">
-        <span>
-          <img src="Cup.gif" width={46} alt="Cup Logo" />
-        </span>
-        <p className="relative z-20 ml-2 bg-clip-text text-transparent bg-gradient-to-b from-neutral-200 to-neutral-500">
-          MyCoffee
-        </p>
-      </div>
-      <div className='flex flex-row  flex-auto items-center justify-between relative'>
+      <Link href='/'>
+        <div className="flex items-center justify-center text-2xl sm:text-3xl md:text-4xl font-bold">
+          <span>
+            <img src="Cup.gif" width={46} alt="Cup Logo" />
+          </span>
+          <p className="relative z-20 ml-2 bg-clip-text text-transparent bg-gradient-to-b from-neutral-200 to-neutral-500">
+            MyCoffee
+          </p>
+        </div>
+      </Link>
+      <div className='flex flex-row  items-center justify-between relative'>
         <div className='flex top-0 left-0'>
           {
             session ?

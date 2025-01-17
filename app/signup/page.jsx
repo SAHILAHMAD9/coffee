@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Label from "@/components/ui/Label";
 import Input from "@/components/ui/Input";
 import { cn } from "@/lib/utils";
@@ -8,12 +8,12 @@ import {
     IconBrandGoogle,
 } from "@tabler/icons-react";
 import { useSession, signIn, signOut } from 'next-auth/react'
-import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function page() {
     const { data: session } = useSession();
     console.log(session);
-
+    const router = useRouter();
     const [Form, setForm] = useState({
         firstname: "",
         lastname: "",
@@ -27,6 +27,14 @@ export default function page() {
             [name]: value,
         }));
     }
+
+    useEffect(() => {
+        document.title = "Login - Get Me A Chai"
+        console.log(session)
+        if (session) {
+            router.push('/dashboard');
+        }
+    }, [session])
 
     // const [showPassword, setSetshowPassword] = useState(false);
     return (
@@ -45,16 +53,16 @@ export default function page() {
                         <LabelInputContainer>
                             <Label className='text-white' htmlFor="firstname">First name
                             </Label>
-                            <Input onChange={changeHandler} name="firstname" value={Form.firstname} id="firstname" placeholder="Sahil" type="text" autoComplete="new-firstname"/>
+                            <Input onChange={changeHandler} name="firstname" value={Form.firstname} id="firstname" placeholder="Sahil" type="text" autoComplete="new-firstname" />
                         </LabelInputContainer>
                         <LabelInputContainer>
                             <Label className='text-white' htmlFor="lastname">Last name</Label>
-                            <Input onChange={changeHandler} name="lastname" value={Form.lastname} id="lastname" placeholder="Ahmad" type="text" autoComplete="new-lastname"/>
+                            <Input onChange={changeHandler} name="lastname" value={Form.lastname} id="lastname" placeholder="Ahmad" type="text" autoComplete="new-lastname" />
                         </LabelInputContainer>
                     </div>
                     <LabelInputContainer className="mb-4">
                         <Label className='text-white' htmlFor="email">Email Address</Label>
-                        <Input onChange={changeHandler} name="email" value={Form.email} id="email" placeholder="sahilahmad3504@gmail.com" type="email" autoComplete="new-email"/>
+                        <Input onChange={changeHandler} name="email" value={Form.email} id="email" placeholder="sahilahmad3504@gmail.com" type="email" autoComplete="new-email" />
                     </LabelInputContainer>
                     <LabelInputContainer className="mb-4">
                         <Label className='text-white' htmlFor="password">Password</Label>
