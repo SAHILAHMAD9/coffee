@@ -50,7 +50,7 @@ if (!session) {
                     >
                 <div
                     className=" w-full mx-auto md:w-[50rem] rounded-md md:rounded-2xl p-4 md:p-8 shadow-input bg-black">
-                    <h2 className="font-bold text-2xl text-neutral-200">
+                    <h2 className="font-bold text-3xl font-mono text-neutral-200">
                         Welcome to your Dashboard
                     </h2>
                     <p className=" text-sm max-w-sm mt-2 text-neutral-300">
