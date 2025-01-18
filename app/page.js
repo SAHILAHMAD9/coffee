@@ -1,3 +1,5 @@
+"use client"
+import { Boxes } from "@/components/ui/BackgroundBoxes";
 import DotPattern from "@/components/ui/DotPattern";
 import { Spotlight } from "@/components/ui/Spotlight";
 import {

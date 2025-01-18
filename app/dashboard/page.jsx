@@ -30,7 +30,7 @@ const page = () => {
   }
 
     useEffect(()=>{
-        document.title = "Dashboard - Get Me A Chai"
+        document.title = "Dashboard - Get Me A COFFEE"
 if (!session) {
     router.push('/login');
 }

@@ -18,7 +18,7 @@ export const Dropbox = () => {
         <span className="sr-only"></span>
         <img
           className="w-8 h-8 me-2 rounded-full"
-          src={session.user.image}
+          src={session.user.image || 'profile.gif'}
           alt="user photo"
         />
         <div className="flex items-center justify-center w-auto"> {session.user.name}</div>
