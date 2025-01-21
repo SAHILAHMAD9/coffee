@@ -23,7 +23,7 @@ export function ProfileCard() {
             className="h-10 w-10 rounded-full border-2 object-cover" />
           <div className="flex flex-col">
             <p className="font-normal text-base text-gray-50 relative z-10">
-              Manu Arora
+              Sahil Ahmad
             </p>
           </div>
         </div>

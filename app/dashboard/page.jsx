@@ -7,6 +7,7 @@ import Input from "@/components/ui/Input";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { LampContainer } from "@/components/ui/LampDemo";
+import Link from 'next/link';
 
 const page = () => {
     const {data : session } = useSession();
@@ -54,7 +55,7 @@ if (!session) {
                         Welcome to your Dashboard
                     </h2>
                     <p className=" text-sm max-w-sm mt-2 text-neutral-300">
-                        Create your Profile
+                        Create your Profile! <Link href='/home'><span className='italic text-blue-300 underline'>Allready created?</span></Link>
                     </p>
                     <form className="my-8 " >
                         <LabelInputContainer className="mb-4">

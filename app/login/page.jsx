@@ -46,7 +46,7 @@ export default function page() {
                         }}
                         className="relative md:mt-40 login bg-gradient-to-br from-slate-300 to-slate-500 rounded-2xl w-[20rem] sm:w-[28rem] md:w-[35rem] text-transparent"
                     >
-                        <div className="mx-auto w-full rounded-2xl p-4 md:p-8 shadow-input bg-black">
+                            <div className="mx-auto w-full rounded-2xl p-4 md:p-8 shadow-input bg-black">
                             <h2 className="font-bold text-xl sm:text-2xl text-neutral-200">
                                 Welcome
                             </h2>

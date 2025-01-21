@@ -44,7 +44,6 @@ export const authoptions = NextAuth({
             email: user.email,
             provider : "github",
           });
-  
           if (!existingUser) {
             existingUser = await User.create({
               email: user.email,
@@ -52,7 +51,6 @@ export const authoptions = NextAuth({
               username: user.email.split('@')[0],
             });
         }
-        return true;
         }
         if (account.provider == "google") {
           let existingUser = await User.findOne({ 
@@ -67,8 +65,8 @@ export const authoptions = NextAuth({
               username: user.email.split('@')[0],
             });
         }
-        return true;
-        }
+      }
+      return true;
       } catch (error) {
         console.error('Sign in error:', error);
         if (error.code === 11000) {
@@ -79,15 +77,15 @@ export const authoptions = NextAuth({
       }
     },
     async session({ session, user, token }) {
-      const dbUser = await User.findOne({email: session.user.email });
+      const dbUser = await User.find({email: session.user.email });
       if (dbUser) {
-        session.user.id = dbUser._id;
-        session.user.username = dbUser.username;
-        session.user.provider = dbUser.provider;
+        session.user.id = await dbUser._id;
+        session.user.username = await dbUser.username;
+        session.user.provider = await dbUser.provider;
       } else {
         console.error('User not found in database');
       }
-      console.log(token.provider);
+      console.log(session);
       return session
     },
   }
