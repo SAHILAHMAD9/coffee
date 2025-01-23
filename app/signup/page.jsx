@@ -14,7 +14,6 @@ import { LampContainer } from "@/components/ui/LampDemo";
 
 export default function page() {
     const { data: session } = useSession();
-    console.log(session);
     const router = useRouter();
     const [Form, setForm] = useState({
         firstname: "",
@@ -31,8 +30,8 @@ export default function page() {
     }
 
     useEffect(() => {
-        document.title = "Login - Get Me A Chai"
-        console.log(session)
+        document.title = "Login - Get Me A COFFEE"
+        // console.log(session)
         if (session) {
             router.push('/dashboard');
         }

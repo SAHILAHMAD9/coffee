@@ -39,20 +39,21 @@ export const authoptions = NextAuth({
     async signIn({ user, account, profile, email, credentials }) {
       try {
         await dbConnect();
-        if (account.provider == "github") {
+        if (account.provider === "github") {
           let existingUser = await User.findOne({ 
             email: user.email,
             provider : "github",
           });
           if (!existingUser) {
             existingUser = await User.create({
+              name: user.name,
               email: user.email,
               provider: "github",
               username: user.email.split('@')[0],
             });
         }
         }
-        if (account.provider == "google") {
+        if (account.provider === "google") {
           let existingUser = await User.findOne({ 
             email: user.email,
             provider : "google",
@@ -60,6 +61,7 @@ export const authoptions = NextAuth({
   
           if (!existingUser) {
             existingUser = await User.create({
+              name: user.name,
               email: user.email,
               provider: "google",
               username: user.email.split('@')[0],
@@ -77,15 +79,17 @@ export const authoptions = NextAuth({
       }
     },
     async session({ session, user, token }) {
-      const dbUser = await User.find({email: session.user.email });
-      if (dbUser) {
-        session.user.id = await dbUser._id;
-        session.user.username = await dbUser.username;
-        session.user.provider = await dbUser.provider;
-      } else {
-        console.error('User not found in database');
+      const gitUser = await User.findOne({email: session.user.email , provider : "github" });
+      const googleUser = await User.findOne({email : session.user.email , provider : "google" });
+      if (gitUser) {
+        session.user.username = gitUser.username;
+        session.user.provider = "github";
+      } 
+      if(googleUser) {
+        session.user.username = googleUser.username;
+        session.user.provider = "google";
       }
-      console.log(session);
+      // console.log(session);
       return session
     },
   }

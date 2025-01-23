@@ -64,7 +64,7 @@ if (!session) {
                         </LabelInputContainer>
                         <LabelInputContainer className="mb-4">
                             <Label className='text-white' htmlFor="email">Email Address</Label>
-                            <Input onChange={changeHandler} name="email" value={Form.email} id="email" placeholder="sahilahmad3504@gmail.com" type="email" autoComplete="new-email" />
+                            <Input onChange={changeHandler} name="email" value={Form.email} id="email" placeholder="sahilahmad3504@gmail.com" type="email" autoComplete="new-email" ></Input>
                         </LabelInputContainer>
                         <LabelInputContainer className="mb-4">
                             <Label className='text-white' htmlFor="username">Username</Label>

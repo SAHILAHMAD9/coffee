@@ -1,11 +1,12 @@
 'use client'
 import { useSession, signOut, signIn } from "next-auth/react";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useState ,useEffect} from "react";
 
 export const Dropbox = () => {
   const { data: session } = useSession();
   const [showDropDown, setshowDropDown] = useState(false);
+  
   return (
     <div className="h-full flex flex-col bg -black z- 20 min-w-50 gap-2  items-center rounded-full m-1 relative left-0 top-0 ">
       <button

@@ -15,4 +15,5 @@ const userSchema = new Schema({
     updatedAt: { type: Date, default: Date.now },
     });
 
-    export default mongoose.models.User || model("User", userSchema);
+    const User = mongoose.models?.User || model('User', userSchema);
+export default User;

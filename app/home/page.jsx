@@ -5,34 +5,68 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import ProfileCard from '@/components/ProfileCard';
 import { cn } from "@/lib/utils";
-import Label from "@/components/ui/Label";
 import Input from "@/components/ui/Input";
+import dbConnect from '@/db/dbConnect';
+import User from '@/models/User';
+import Link from 'next/link';
 
 const Page = () => {
   const { data: session } = useSession();
-  const router = useRouter();
-  const [Form , setForm] = useState({
-    name : "" ,
-    massage : "" ,
-    amount : ""
-  })
+  const [users, setUsers] = useState([]);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  function changeHandler(event) {
-    const { name, value } = event.target;
-    setForm((prev) => ({
-        ...prev,
-        [name]: value,
-    }));
-    console.log(Form);
-}
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch('/api/users');
+        console.log("API Response status:", response.status);
 
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        // console.log("Fetched data:client", data);
+
+        if (Array.isArray(data)) {
+          setUsers(data);
+        } else {
+          console.error("Data is not an array:", data);
+        }
+      } catch (error) {
+        console.error("Error fetching users:", error);
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUsers();
+  }, []);
+  // console.log(users);
+
+  const sessionName = session?.user?.name;
+  const sessionImage = session?.user?.image;
+  const sessionUsername = session?.user?.username;
+
+  // const [hoverParams, setHoverParams] = useState({
+  //   username : "",
+  //   name : "",
+  //   image:""
+  // });
+
+  // useEffect(() => {
+  //  name  : session.name,
+  // },[session])
 
   return (
     <div className="bg-black w-full min-h-screen flex flex-col justify-center relative items-center text-white">
       {/* Cover Image Container */}
       <div className='absolute top-0 w-full p-2 sm:p-4 h-[250px] sm:h-[350px] lg:h-[450px]'>
         <img
-          src='/Cover.jpg'
+          src={'/Cover.jpg'}
           className='w-full h-full rounded-lg sm:rounded-xl lg:rounded-2xl object-cover'
           alt='Cover image'
         />
@@ -48,104 +82,12 @@ const Page = () => {
           <Icon className="absolute h-4 w-4 sm:h-5 sm:w-5 lg:h-6 lg:w-6 -bottom-3 -left-3 text-white" />
           <Icon className="absolute h-4 w-4 sm:h-5 sm:w-5 lg:h-6 lg:w-6 -top-3 -right-3 text-white" />
           <Icon className="absolute h-4 w-4 sm:h-5 sm:w-5 lg:h-6 lg:w-6 -bottom-3 -right-3 text-white" />
-          <EvervaultCard src='/Cover.jpg' />
-        </div>
-        <div className='relative flex items-center justify-between w-full gap-4 m-4 flex-col md:flex-row py-8'>
-
-        {/* ****************** MASSAGE BOX ***************** */}
-
-        <div className="h-96 relative w-full overflow-hidden bg-black flex flex-col items-center justify-center rounded-lg">
-          <div className="absolute inset-0 w-full h-full bg-slate-900 z-20 [mask-image:radial-gradient(transparent,white)] pointer-events-none" />
-          <h1 className={cn("md:text-4xl text-xl text-white relative z-20")}>
-            Supporters
-          </h1>
-        </div>
-
-                {/* ****************** PAYMENT FORM ***************** */}
-
-        <div className="h-96 relative w-full overflow-hidden bg-black flex flex-col items-center justify-center rounded-lg">
-          <div className="absolute inset-0 w-full h-full bg-slate-900 z-20 [mask-image:radial-gradient(transparent,white)] pointer-even ts-none" />
-
-          <div className="mx-auto relative z-20 w-full h-full border border-slate-900  p-4 md:px-8 shadow-input bg- black">
-                            <h2 className="font-bold text-xl sm:text-2xl text-neutral-200">
-                                Make a Payment
-                            </h2>
-                            <form className="my-6 sm:my-8">
-                                <LabelInputContainer className="mb-4">
-                                    {/* <Label className='text-white text-sm sm:text-base' htmlFor="name">Email Address</Label> */}
-                                    <Input 
-                                        onChange={changeHandler} 
-                                        name="name" 
-                                        value={Form.name} 
-                                        id="name" 
-                                        placeholder="Your Name" 
-                                        type="text" 
-                                        className="text-sm sm:text-base"
-                                        autoComplete="new-name" 
-                                    />
-                                </LabelInputContainer>
-                                
-                                <LabelInputContainer className="mb-4">
-                                    {/* <Label className='text-white text-sm sm:text-base' htmlFor="massage">Password</Label> */}
-                                    <Input 
-                                        onChange={changeHandler} 
-                                        name="massage" 
-                                        value={Form.massage} 
-                                        id="massage" 
-                                        placeholder="Type Your Massage" 
-                                        type="text"
-                                        className="text-sm sm:text-base" 
-                                        autoComplete="new-massage"
-                                    />
-                                </LabelInputContainer>
-                                <LabelInputContainer className="mb-4">
-                                    {/* <Label className='text-white text-sm sm:text-base' htmlFor="massage">Password</Label> */}
-                                    <Input 
-                                        onChange={changeHandler} 
-                                        name="amount" 
-                                        value={Form.amount} 
-                                        id="amount" 
-                                        placeholder="Enter the Amount" 
-                                        type="number"
-                                        className="text-sm sm:text-base" 
-                                        autoComplete="new-amaount"
-                                    />
-                                </LabelInputContainer>
-
-                                <button
-                                    className="bg-gradient-to-br relative group/btn from-zinc-900 to-zinc-900 block bg-zinc-800 w-full text-white rounded-md h-9 sm:h-10 font-medium text-sm sm:text-base shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]"
-                                    type="submit">
-                                    Pay &rarr;
-                                    <BottomGradient />
-                                </button>
-                               <div className='flex flex-row items-center justify-between gap-8 py-4'>
-                               <div
-                                    className="bg-gradient-to-br relative group/btn from-zinc-900 to-zinc-900 flex items-center justify-center bg-zinc-800 w-full text-white rounded-md h-9 sm:h-10 font-medium text-sm sm:text-base shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]">
-                                    Pay 50
-                                    <BottomGradient />
-                                </div>
-                                <div
-                                    className="bg-gradient-to-br relative group/btn from-zinc-900 to-zinc-900 flex items-center justify-center bg-zinc-800 w-full text-white rounded-md h-9 sm:h-10 font-medium text-sm sm:text-base shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]">
-                                    Pay 100
-                                    <BottomGradient />
-                                </div>
-                                <div
-                                    className="bg-gradient-to-br relative group/btn from-zinc-900 to-zinc-900 flex items-center justify-center bg-zinc-800 w-full text-white rounded-md h-9 sm:h-10 font-medium text-sm sm:text-base shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]">
-                                    Pay 500
-                                    <BottomGradient />
-                                </div>
-                               </div>
-
-                                <div className="bg-gradient-to-r from-transparent via-neutral-700 to-transparent my-6 sm:my-8 h-[1px] w-full" />
-                            </form>
-                        </div>
-
-
-        </div>
+          <EvervaultCard username={sessionUsername} name={sessionName} src={sessionImage || '/Cover.jpg'} />
         </div>
         
+
         <div className='relative flex items-center justify-center flex-col border border-white/[0.2] m-10 py-8'>
-        <Icon className="absolute h-4 w-4 sm:h-5 sm:w-5 lg:h-6 lg:w-6 -top-3 -left-3 text-white" />
+          <Icon className="absolute h-4 w-4 sm:h-5 sm:w-5 lg:h-6 lg:w-6 -top-3 -left-3 text-white" />
           <Icon className="absolute h-4 w-4 sm:h-5 sm:w-5 lg:h-6 lg:w-6 -bottom-3 -left-3 text-white" />
           <Icon className="absolute h-4 w-4 sm:h-5 sm:w-5 lg:h-6 lg:w-6 -top-3 -right-3 text-white" />
           <Icon className="absolute h-4 w-4 sm:h-5 sm:w-5 lg:h-6 lg:w-6 -bottom-3 -right-3 text-white" />
@@ -156,17 +98,16 @@ const Page = () => {
                       gap-4 sm:gap-6 lg:gap-14 
                       mt-8 sm:mt-12 lg:mt-16 
                       px-2 sm:px-4 lg:px-8'>
-
-            <ProfileCard />
-            <ProfileCard />
-            <ProfileCard />
-            <ProfileCard />
-            <ProfileCard />
-            <ProfileCard />
-            <ProfileCard />
-            <ProfileCard />
-            <ProfileCard />
-            <ProfileCard />
+            {loading && <p>Loading users...</p>}
+            {error && <p>Error: {error}</p>}
+            {users.length === 0 && !loading && !error && <p>No users found</p>}
+            {users.map((user) => (
+              <ProfileCard
+                key={user._id}
+                user={user}
+              />
+            ))
+            }
           </div>
         </div>
       </div>
@@ -178,10 +119,10 @@ const Page = () => {
 
 const BottomGradient = () => {
   return (
-      <>
-          <span className="group-hover/btn:opacity-100 block transition duration-500 opacity-0 absolute h-px w-full -bottom-px inset-x-0 bg-gradient-to-r from-transparent via-cyan-500 to-transparent" />
-          <span className="group-hover/btn:opacity-100 blur-sm block transition duration-500 opacity-0 absolute h-px w-1/2 mx-auto -bottom-px inset-x-10 bg-gradient-to-r from-transparent via-indigo-500 to-transparent" />
-      </>
+    <>
+      <span className="group-hover/btn:opacity-100 block transition duration-500 opacity-0 absolute h-px w-full -bottom-px inset-x-0 bg-gradient-to-r from-transparent via-cyan-500 to-transparent" />
+      <span className="group-hover/btn:opacity-100 blur-sm block transition duration-500 opacity-0 absolute h-px w-1/2 mx-auto -bottom-px inset-x-10 bg-gradient-to-r from-transparent via-indigo-500 to-transparent" />
+    </>
   );
 };
 
@@ -190,9 +131,9 @@ const LabelInputContainer = ({
   className
 }) => {
   return (
-      <div className={cn("flex flex-col space-y-2 w-full", className)}>
-          {children}
-      </div>
+    <div className={cn("flex flex-col space-y-2 w-full", className)}>
+      {children}
+    </div>
   );
 };
 

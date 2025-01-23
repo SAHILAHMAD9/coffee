@@ -6,6 +6,8 @@ import { cn } from "@/lib/utils";
 
 export const EvervaultCard = ({
   src,
+  username,
+  name,
   className
 }) => {
   let mouseX = useMotionValue(0);
@@ -41,13 +43,15 @@ export const EvervaultCard = ({
         onMouseMove={onMouseMove}
         className="group/card rounded-3xl w-full relative overflow-hidden bg-transparent flex items-center justify-center h-full">
         <CardPattern mouseX={mouseX} mouseY={mouseY} randomString={randomString} />
-        <div className="relative z-10 flex items-center justify-center">
+        <div className="relative z-10 gap-5 flex flex-col items-center justify-center">
           <div
             className="relative h-44 w-44  rounded-full flex items-center justify-center text-white font-bold text-4xl">
             <div
               className="absolute w-full h-full bg-white/[0.8] dark:bg-black/[0.8] blur-sm rounded-full" />
             <img className="dark:text-white rounded-full h-full text-black z-20" src={src}></img>
           </div>
+          <h1 className="text-xl">{name}</h1>
+          <h1 className="opacity-80">{username}</h1>
         </div>
       </div>
     </div>)
