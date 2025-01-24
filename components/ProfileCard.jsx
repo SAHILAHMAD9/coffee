@@ -10,7 +10,7 @@ export function ProfileCard({user}) {
   const backgroundImage = user.image || 'https://images.unsplash.com/photo-1544077960-604201fe74bc?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1651&q=80';
   
   const profileClick = () => {
-    console.log(user);
+    // console.log(user);
     router.push(`/paymentgateway/${user.username}`);
   } 
  
@@ -34,17 +34,16 @@ export function ProfileCard({user}) {
             className="h-10 w-10 rounded-full border-2 object-cover" />
           <div className="flex flex-col">
             <p className="font-normal text-base text-gray-50 relative z-10">
-              {user.name}
+              {user.username}
             </p>
           </div>
         </div>
         <div className="text content">
           <h1 className="font-bold text-xl md:text-2xl text-gray-50 relative z-10">
-            {user.username}
+            {user.name}
           </h1>
-          <p className="font-normal text-sm text-gray-50 relative z-10 my-4">
-            Card with Author avatar, complete name and time to read - most
-            suitable for blogs.
+          <p className="font-normal text-sm text-gray-50 w-[212px] sm:w-[288px] relative z-10 my-4">
+            Card with developer description, let them complete name and description from dashboard section to view details.
           </p>
         </div>
       </div>

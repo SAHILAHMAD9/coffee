@@ -1,8 +1,10 @@
+'use client'
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import SessionWrapper from "@/components/SessionWrapper";
+import { Toaster } from 'react-hot-toast';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -14,7 +16,7 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata = {
+const metadata = {
   title: "Buy me a COFFEE",
   description: "Crowdfunding App to support your FAV developer!!",
 };
@@ -26,6 +28,10 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <SessionWrapper>
+        <Toaster
+  position="top-center"
+  reverseOrder={false}
+/>
           <Navbar />
           {children}
           <Footer />

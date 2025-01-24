@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { LampContainer } from "@/components/ui/LampDemo";
 import Link from 'next/link';
+import toast from 'react-hot-toast';
 
 const page = () => {
     const {data : session } = useSession();
@@ -18,8 +19,8 @@ const page = () => {
       username : "",
       profile : "",
       cover : "",
-      razorpayid : "",
-      razorpaysecret : "",
+      role : "",
+      description : "",
   })
 
   function changeHandler(event) {
@@ -33,7 +34,8 @@ const page = () => {
     useEffect(()=>{
         document.title = "Dashboard - Get Me A COFFEE"
 if (!session) {
-    router.push('/login');
+    toast.error("Login First!")
+    router.push('/');
 }
     },[session])
   return (
@@ -79,12 +81,12 @@ if (!session) {
                             <Input onChange={changeHandler} name="cover" value={Form.cover} id="cover" placeholder="https//sahilAhmadCoverURL.com" type="text" autoComplete="new-cover" />
                         </LabelInputContainer>
                         <LabelInputContainer className="mb-4">
-                            <Label className='text-white' htmlFor="razorpayID">RazorPay Id</Label>
-                            <Input onChange={changeHandler} name="razorpayID" value={Form.razorpayid} id="razorpayID" placeholder="@sahilahmad3504" type="text" autoComplete="new-razorpayID" />
+                            <Label className='text-white' htmlFor="role">Role</Label>
+                            <Input onChange={changeHandler} name="role" value={Form.role} id="role" placeholder="WEB DEVELOPER" type="text" autoComplete="new-razorpayID" />
                         </LabelInputContainer>
                         <LabelInputContainer className="mb-4">
-                            <Label className='text-white' htmlFor="razorpaySecret">RazorPay Secret</Label>
-                            <Input onChange={changeHandler} name="razorpaySecret" value={Form.razorpaysecret} id="razorpaySecret" placeholder="@sahilahmad3504" type="text" autoComplete="new-razorpaySecret" />
+                            <Label className='text-white' htmlFor="description">Aboute Yourself</Label>
+                            <Input onChange={changeHandler} name="description" value={Form.description} id="description" placeholder="I am a FULLSTACK developer......." type="text" autoComplete="new-razorpaySecret" />
                         </LabelInputContainer>
 
                         <button

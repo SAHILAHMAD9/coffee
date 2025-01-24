@@ -11,6 +11,7 @@ import { useSession, signIn, signOut } from 'next-auth/react'
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { LampContainer } from "@/components/ui/LampDemo";
+import toast from "react-hot-toast";
 
 export default function page() {
     const { data: session } = useSession();
@@ -33,6 +34,7 @@ export default function page() {
         document.title = "Login - Get Me A COFFEE"
         // console.log(session)
         if (session) {
+            toast.success("Successfully Singed Up!")
             router.push('/dashboard');
         }
     }, [session])

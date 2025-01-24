@@ -9,9 +9,11 @@ import Input from "@/components/ui/Input";
 import dbConnect from '@/db/dbConnect';
 import User from '@/models/User';
 import Link from 'next/link';
+import toast from 'react-hot-toast';
 
 const Page = () => {
   const { data: session } = useSession();
+  const router = useRouter()
   const [users, setUsers] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -50,16 +52,6 @@ const Page = () => {
   const sessionName = session?.user?.name;
   const sessionImage = session?.user?.image;
   const sessionUsername = session?.user?.username;
-
-  // const [hoverParams, setHoverParams] = useState({
-  //   username : "",
-  //   name : "",
-  //   image:""
-  // });
-
-  // useEffect(() => {
-  //  name  : session.name,
-  // },[session])
 
   return (
     <div className="bg-black w-full min-h-screen flex flex-col justify-center relative items-center text-white">

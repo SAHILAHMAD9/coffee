@@ -2,6 +2,8 @@
 import { useSession, signOut, signIn } from "next-auth/react";
 import Link from "next/link";
 import React, { useState ,useEffect} from "react";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 export const Dropbox = () => {
   const { data: session } = useSession();
@@ -75,7 +77,10 @@ export const Dropbox = () => {
           </li>
           <li>
             <div
-              onClick={() => signOut()}
+              onClick={() => {
+                signOut()
+                toast.success('Successfully Logged Out')
+                }}
               className="block px-4 py-2  text-xl fo nt-semibold hover:bg-gray-600 hover:rounded-sm hover:text-white"
             >
               Log Out

@@ -9,8 +9,8 @@ const userSchema = new Schema({
     provider: { type: String, required: true },
     profilepic: {type: String},
     coverpic: {type: String},
-    razorpayid: { type: String },
-    razorpaysecret: { type: String },
+    role: { type: String },
+    description: { type: String },
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now },
     });
