@@ -8,6 +8,7 @@ import Input from "@/components/ui/Input";
 import dbConnect from '@/db/dbConnect';
 import User from '@/models/User';
 import { initiate } from '@/actions/useractions';
+import Razorpay from "razorpay";
 
 const Page = ({ params }) => {
   const { data: session } = useSession();
@@ -21,7 +22,7 @@ const Page = ({ params }) => {
     message: "",
     amount: "",
   });
-  
+
   useEffect(() => {
     const fetchUser = async () => {
       setLoading(true);
@@ -56,23 +57,41 @@ const Page = ({ params }) => {
     
   }; 
 
+  const loadRazorpayScript = () => {
+    return new Promise((resolve) => {
+      const script = document.createElement("script");
+      script.src = "https://checkout.razorpay.com/v1/checkout.js";
+      script.onload = () => resolve(true);
+      script.onerror = () => resolve(false);
+      document.body.appendChild(script);
+    });
+  };
+    
+
   const pay = async (amount) => {
-    // Get the order Id 
+    const isRazorpayLoaded = await loadRazorpayScript();
+  if (!isRazorpayLoaded) {
+    alert("Failed to load Razorpay. Please check your internet connection.");
+    return;
+  }
+  try {
     let a = await initiate(amount, username, paymentForm)
     let orderId = a.id
+    const key = process.env.NEXT_PUBLIC_RAZORPAY_KEY;
+    console.log('RAZORPAY_KEY:', key);
     var options = {
-        "key": process.env.RAZORPAY_KEY, // Enter the Key ID generated from the Dashboard
-        "amount": amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+        "key_id":key, 
+        "amount": amount, 
         "currency": "INR",
-        "name": "Get Me A Chai", //your business name
+        "name": "Get Me A COFFEE", 
         "description": "Test Transaction",
         "image": "https://example.com/your_logo",
         "order_id": orderId, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
         "callback_url": `${process.env.NEXT_PUBLIC_URL}/api/razorpay`,
         "prefill": { //We recommend using the prefill parameter to auto-fill customer's contact information especially their phone number
-            "name": "Gaurav Kumar", //your customer's name
+            "name": "Gaurav Kumar", 
             "email": "gaurav.kumar@example.com",
-            "contact": "9000090000" //Provide the customer's phone number for better conversion rates 
+            "contact": "9000090000" 
         },
         "notes": {
             "address": "Razorpay Corporate Office"
@@ -82,8 +101,13 @@ const Page = ({ params }) => {
         }
     }
 
-    var rzp1 = new Razorpay(options);
+    var rzp1 = new window.Razorpay(options);
     rzp1.open();
+  } catch (error) {
+    console.error("Error during payment initialization:", error);
+    alert("Payment initialization failed. Please try again.");
+  }
+    
 }
 
   return (
@@ -157,7 +181,7 @@ const Page = ({ params }) => {
       </LabelInputContainer>
 
       <button
-      onClick={() => pay(paymentForm.amount * 100)}
+      onClick={() => pay(Number.parseInt(paymentForm.amount) * 100)}
         className="bg-gradient-to-br relative group/btn from-zinc-900 to-zinc-900 block bg-zinc-800 w-full text-white rounded-md h-9 sm:h-10 font-medium text-sm sm:text-base shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]"
         type="submit">
         Pay &rarr;
@@ -165,18 +189,21 @@ const Page = ({ params }) => {
       </button>
       <div className='flex flex-row items-center justify-between gap-8 py-4'>
         <div
-          className="bg-gradient-to-br relative group/btn from-zinc-900 to-zinc-900 flex items-center justify-center bg-zinc-800 w-full text-white rounded-md h-9 sm:h-10 font-medium text-sm sm:text-base shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]">
-          Pay 50
-          <BottomGradient />
-        </div>
-        <div
+        onClick={() => pay(10000)}
           className="bg-gradient-to-br relative group/btn from-zinc-900 to-zinc-900 flex items-center justify-center bg-zinc-800 w-full text-white rounded-md h-9 sm:h-10 font-medium text-sm sm:text-base shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]">
           Pay 100
           <BottomGradient />
         </div>
         <div
+        onClick={() => pay(50000)}
           className="bg-gradient-to-br relative group/btn from-zinc-900 to-zinc-900 flex items-center justify-center bg-zinc-800 w-full text-white rounded-md h-9 sm:h-10 font-medium text-sm sm:text-base shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]">
           Pay 500
+          <BottomGradient />
+        </div>
+        <div
+        onClick={() => pay(100000)}
+          className="bg-gradient-to-br relative group/btn from-zinc-900 to-zinc-900 flex items-center justify-center bg-zinc-800 w-full text-white rounded-md h-9 sm:h-10 font-medium text-sm sm:text-base shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]">
+          Pay 1000
           <BottomGradient />
         </div>
       </div>

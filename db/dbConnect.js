@@ -9,10 +9,12 @@ const dbConnect = async () => {
         await mongoose.connect(url,{
             dbName : 'coffee',
         });
+        console.log("i am here");
+        
         console.log(`MongoDB Connected: ${conn.connection.host}`);
         return conn;
     } catch (error) {
-        console.log("db connection failed");
+        console.log("db connection failed!!!!!");
         // process.exit(1);
     }
 }
