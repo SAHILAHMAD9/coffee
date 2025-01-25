@@ -21,10 +21,10 @@ export const Dropbox = () => {
         <span className="sr-only"></span>
         <img
           className="w-8 h-8 me-2 rounded-full"
-          src={session.user.image || 'profile.gif'}
+          src={session?.user?.image || 'profile.gif'}
           alt="user photo"
         />
-        <div className="flex items-center justify-center w-auto"> {session.user.name}</div>
+        <div className="flex items-center justify-center w-auto"> {session?.user?.name}</div>
         <svg
           className="w-2.5 h-2.5 ms-3"
           aria-hidden="true"
@@ -54,7 +54,7 @@ export const Dropbox = () => {
       >
         <div className="px-4 py-3 text-sm text-white">
           <div className="font-medium">Pro User</div>
-          <div className="truncate">{session.user.email}</div>
+          <div className="truncate">{session?.user?.email}</div>
         </div>
         <ul
           className="py- text-md text-gray-200"

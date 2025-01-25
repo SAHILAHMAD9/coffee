@@ -10,6 +10,7 @@ import User from '@/models/User';
 import { fetchpayments, fetchUser, initiate } from '@/actions/useractions';
 import Razorpay from "razorpay";
 import toast from 'react-hot-toast';
+import { Meteors } from '@/components/ui/Meteors';
 
 const Page = ({ params }) => {
   const { data: session } = useSession();
@@ -33,7 +34,7 @@ const Page = ({ params }) => {
       ...prev,
       [event.target.name]: event.target.value,
     }));
-    console.log(paymentForm);
+    // console.log(paymentForm);
 
   };
 
@@ -48,6 +49,24 @@ const Page = ({ params }) => {
   };
 
   const pay = async (amount) => {
+    if (paymentForm.name == "") {
+      toast('Please enter a valid Name!', {
+        icon: '👏',
+      });
+      return;
+    }
+    if (paymentForm.message == "") {
+      toast('Please enter a valid Message!', {
+        icon: '👏',
+      });
+      return;
+    }
+    if (!amount || amount <= 0) {
+      toast('Please enter a valid amount!', {
+        icon: '👏',
+      });
+      return;
+    }
     const isRazorpayLoaded = await loadRazorpayScript();
     if (!isRazorpayLoaded) {
       alert("Failed to load Razorpay. Please check your internet connection.");
@@ -57,7 +76,6 @@ const Page = ({ params }) => {
       let a = await initiate(amount, username, paymentForm)
       let orderId = a.id
       const key = process.env.NEXT_PUBLIC_RAZORPAY_KEY;
-      console.log('RAZORPAY_KEY:', key);
       var options = {
         "key_id": key,
         "amount": amount,
@@ -90,8 +108,8 @@ const Page = ({ params }) => {
   }
   useEffect(() => {
     if (searchParams.get("paymentdone") == "true") {
-      toast.success("Transaction compleated Sucessfuly!")
-      router.push('/home')
+      toast.success("Transaction compleated Sucessfuly!");
+      router.push('/home');
     }
 
   }, [])
@@ -102,7 +120,7 @@ const Page = ({ params }) => {
     let payment = await fetchpayments(username);
     setPayments(payment);
   }
-console.log(currentUser);
+// console.log(currentUser);
 
   useEffect(() => {
     getData();
@@ -129,7 +147,7 @@ console.log(currentUser);
           <Icon className="absolute h-4 w-4 sm:h-5 sm:w-5 lg:h-6 lg:w-6 -bottom-3 -left-3 text-white" />
           <Icon className="absolute h-4 w-4 sm:h-5 sm:w-5 lg:h-6 lg:w-6 -top-3 -right-3 text-white" />
           <Icon className="absolute h-4 w-4 sm:h-5 sm:w-5 lg:h-6 lg:w-6 -bottom-3 -right-3 text-white" />
-          <EvervaultCard username={username} name={currentUser.name} src={session?.user?.image || '/Cover.jpg'} />
+          <EvervaultCard username={username} name={currentUser.name} src={currentUser.image || '/Cover.jpg'} />
         </div>
         {loading && <p>Loading...</p>}
         {/* Payment Form */}
@@ -137,15 +155,15 @@ console.log(currentUser);
 
           {/* ****************** MASSAGE BOX ***************** */}
 
-          <div className="h-96 relative w-full overflow-hidden bg-black flex flex-col items-center justify-center rounded-lg">
+          <div className="h-96 relative w-full overflow-hidden bg-black flex flex-col items-center py-4 justify-center rounded-lg">
             <div className="absolute inset-0 w-full h-full bg-slate-900 z-20 [mask-image:radial-gradient(transparent,white)] pointer-events-none" />
-            <h1 className={cn("md:text-4xl text-xl text-white relative z-20")}>
+            <h1 className={cn("md:text-4xl mb-2 text-xl text-white relative z-20")}>
               Supporters
             </h1>
-            <ul className='mx-5 text-lg'>
+            <ul className='w-full p-4 flex flex-col items-center justify-center text-lg overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200'>
               {payments.length == 0 && <li>No payments yet</li>}
               {payments.map((payment, index) => {
-                return <li key={index} className='my-4 flex gap-2 items-center'>
+                return <li key={index} className='px-2 flex items-center'>
                   <img width={33} src="/Profile.gif" alt="user avatar" />
                   <span>
                     {payment.name} donated <span className='font-bold'>₹{payment.amount}</span> with a message &quot;{payment.message}&quot;❤️🫡
@@ -154,6 +172,7 @@ console.log(currentUser);
               })}
 
             </ul>
+            <Meteors number={30} />
           </div>
 
           {/* ****************** PAYMENT paymentFORM ***************** */}
@@ -191,9 +210,11 @@ console.log(currentUser);
                 </LabelInputContainer>
 
                 <button
-                  onClick={() => pay(Number.parseInt(paymentForm.amount) * 100)}
-                  className="bg-gradient-to-br relative group/btn from-zinc-900 to-zinc-900 block bg-zinc-800 w-full text-white rounded-md h-9 sm:h-10 font-medium text-sm sm:text-base shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]"
-                  type="submit">
+                  onClick={(e) => {
+                    e.preventDefault();
+                    pay(Number.parseInt(paymentForm.amount) * 100)
+                    }}
+                  className="bg-gradient-to-br relative group/btn from-zinc-900 to-zinc-900 block bg-zinc-800 w-full text-white rounded-md h-9 sm:h-10 font-medium text-sm sm:text-base shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]">
                   Pay &rarr;
                   <BottomGradient />
                 </button>

@@ -82,10 +82,12 @@ export const authoptions = NextAuth({
       const gitUser = await User.findOne({email: session.user.email , provider : "github" });
       const googleUser = await User.findOne({email : session.user.email , provider : "google" });
       if (gitUser) {
+        session.user.name = gitUser.name;
         session.user.username = gitUser.username;
         session.user.provider = "github";
       } 
       if(googleUser) {
+        session.user.name = googleUser.name
         session.user.username = googleUser.username;
         session.user.provider = "google";
       }

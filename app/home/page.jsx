@@ -10,6 +10,8 @@ import dbConnect from '@/db/dbConnect';
 import User from '@/models/User';
 import Link from 'next/link';
 import toast from 'react-hot-toast';
+import { fetchpayments, fetchUser, initiate } from '@/actions/useractions';
+import { Meteors } from '@/components/ui/Meteors';
 
 const Page = () => {
   const { data: session } = useSession();
@@ -17,7 +19,16 @@ const Page = () => {
   const [users, setUsers] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [payments, setPayments] = useState([])
+  const [currentUser, setcurrentUser] = useState({})
+  const sessionName = session?.user?.name;
+  const sessionImage = session?.user?.image;
+  const sessionUsername = session?.user?.username;
+  useEffect(() => {
+    getData()
+    console.log(currentUser);
 
+  }, [])
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -48,10 +59,15 @@ const Page = () => {
     fetchUsers();
   }, []);
   // console.log(users);
+  const getData = async () => {
+    let user = await fetchUser(sessionUsername);
+    setcurrentUser(user);
+    let payment = await fetchpayments(sessionUsername);
+    setPayments(payment);
+  }
+  // console.log(currentUser);
 
-  const sessionName = session?.user?.name;
-  const sessionImage = session?.user?.image;
-  const sessionUsername = session?.user?.username;
+
 
   return (
     <div className="bg-black w-full min-h-screen flex flex-col justify-center relative items-center text-white">
@@ -76,8 +92,55 @@ const Page = () => {
           <Icon className="absolute h-4 w-4 sm:h-5 sm:w-5 lg:h-6 lg:w-6 -bottom-3 -right-3 text-white" />
           <EvervaultCard username={sessionUsername} name={sessionName} src={sessionImage || '/Cover.jpg'} />
         </div>
-        
 
+        <div className='relative flex items-center justify-between w-full gap-4 m-4 flex-col md:flex-row py-8'>
+
+          {/* ****************** MASSAGE BOX ***************** */}
+
+          <div className="h-96 relative w-full overflow-hidden bg-black flex flex-col items-center py-4 justify-center rounded-lg">
+            <div className="absolute inset-0 w-full h-full bg-slate-900 z-20 [mask-image:radial-gradient(transparent,white)] pointer-events-none" />
+            <h1 className="md:text-4xl text-xl font-bold text-white relative z-20">
+              MY Supporters
+            </h1>
+            <ul className='w-full p-4 flex flex-col items-center justify-center text-lg overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200'>
+              {payments.length == 0 && <li>No payments yet</li>}
+              {payments.map((payment, index) => {
+                return <li key={index} className='px-2 flex gap-2 items-center'>
+                  <img width={33} src="/Profile.gif" alt="user avatar" />
+                  <span>
+                    {payment.name} donated <span className='font-bold'>₹{payment.amount}</span> with a message &quot;{payment.message}&quot;❤️🫡
+                  </span>
+                </li>
+              })}
+
+            </ul>
+            <Meteors number={30} />
+          </div>
+
+          {/* ****************** PAYMENT paymentFORM ***************** */}
+
+          <div className="h-96 relative w-full overflow-hidden bg-black flex flex-col items-center justify-center rounded-lg">
+            <div className="absolute inset-0 w-full h-full bg-slate-900 z-20 [mask-image:radial-gradient(transparent,white)] pointer-even ts-none" />
+
+            <div className="mx-auto flex  flex-col items-center justify-center relative z-20 w-full h-full   p-4 md:px-8 ">
+            <h1 className="font-bold text-2xl md:text-4xl text-white pb-8 relative z-50">
+                     About Me
+                    </h1>
+
+                    <p className="font-normal text-base text-slate-300 mb-4 relative z-50">
+                      I don&apos;t know what to write so I&apos;ll just paste something
+                      cool here. One more sentence because lorem ipsum is just
+                      unacceptable. Won&apos;t ChatGPT the shit out of this.
+                    </p>
+                    <p className="font-normal text-base text-slate-300 mb-4 relative z-50">
+                    A total of {payments.length} payments have been made, raising an impressive ₹{payments.reduce((a, b) => a + b.amount, 0)}.
+                    </p>
+                    <Meteors number={30} />
+            </div>
+
+
+          </div>
+        </div>
         <div className='relative flex items-center justify-center flex-col border border-white/[0.2] m-10 py-8'>
           <Icon className="absolute h-4 w-4 sm:h-5 sm:w-5 lg:h-6 lg:w-6 -top-3 -left-3 text-white" />
           <Icon className="absolute h-4 w-4 sm:h-5 sm:w-5 lg:h-6 lg:w-6 -bottom-3 -left-3 text-white" />

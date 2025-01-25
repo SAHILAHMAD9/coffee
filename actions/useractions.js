@@ -6,9 +6,6 @@ import User from "@/models/User"
 import dbConnect from "@/db/dbConnect"
 
 export const initiate = async (amount, to_username, paymentForm) => {
-    console.log('RAZORPAY_KEY:at server:', process.env.NEXT_PUBLIC_RAZORPAY_KEY);
-    console.log('RAZORPAY_SECRET:', process.env.NEXT_PUBLIC_RAZORPAY_SECRET);
-    // await dbConnect()
     // let user = await User.findOne({username: to_username})
     var instance = new Razorpay({
         key_id: process.env.NEXT_PUBLIC_RAZORPAY_KEY,
@@ -54,5 +51,27 @@ export const fetchpayments = async (username) => {
         return p
     } catch (error) {
         console.log("fetching PAYMENTS from database failed");
+    }
+}
+
+export const profileUpdate = async ( data , oldUsername ) => {
+    try {
+        await dbConnect()
+        let newData = Object.fromEntries(data);
+        if (oldUsername !== newData.username) {
+            const u = await User.findOne({username : newData.username});
+            if (u) {
+                console.log('username alredy exist');
+                return { error: "Username already exists" }
+            }
+            await User.updateOne({email: newData.email},newData)
+            await Payment.updateMany({to_user: oldUsername}, {to_user: newData.username})
+        } else {
+            await User.updateOne({email: newData.email}, newData) 
+        }
+
+    } catch (error) {
+        console.log('error in profile update useraction');
+        
     }
 }
