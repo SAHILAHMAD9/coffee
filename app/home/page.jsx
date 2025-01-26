@@ -21,14 +21,10 @@ const Page = () => {
   const [loading, setLoading] = useState(true);
   const [payments, setPayments] = useState([])
   const [currentUser, setcurrentUser] = useState({})
-  const sessionName = session?.user?.name;
-  const sessionImage = session?.user?.image;
-  const sessionUsername = session?.user?.username;
-  useEffect(() => {
-    getData()
-    console.log(currentUser);
+  const sessionUsername = session?.user?.username || localStorage.getItem('username');
+  // const sessionName = session?.user?.name || currentUser.name;
+  // const sessionImage = session?.user?.image || currentUser.image;
 
-  }, [])
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -59,22 +55,37 @@ const Page = () => {
     fetchUsers();
   }, []);
   // console.log(users);
-  const getData = async () => {
+  
+useEffect(() => {
+  const getData = async () =>  {
     let user = await fetchUser(sessionUsername);
     setcurrentUser(user);
     let payment = await fetchpayments(sessionUsername);
     setPayments(payment);
-  }
+  };
+  getData();
+},[session])
+  
   // console.log(currentUser);
 
-
+  useEffect(() => {
+    document.title = "Home - Get Me A COFFEE"
+    const checkAuth = async () => {
+    await new Promise(resolve => setTimeout(resolve, 500));
+        if (sessionUsername) {
+            toast.error("Login Again!")
+            router.push('/');
+        }
+    checkAuth();
+   }
+  },[session, router]);
 
   return (
     <div className="bg-black w-full min-h-screen flex flex-col justify-center relative items-center text-white">
       {/* Cover Image Container */}
       <div className='absolute top-0 w-full p-2 sm:p-4 h-[250px] sm:h-[350px] lg:h-[450px]'>
         <img
-          src={'/Cover.jpg'}
+          src={currentUser?.coverpic || '/Cover.jpg'}
           className='w-full h-full rounded-lg sm:rounded-xl lg:rounded-2xl object-cover'
           alt='Cover image'
         />
@@ -90,7 +101,7 @@ const Page = () => {
           <Icon className="absolute h-4 w-4 sm:h-5 sm:w-5 lg:h-6 lg:w-6 -bottom-3 -left-3 text-white" />
           <Icon className="absolute h-4 w-4 sm:h-5 sm:w-5 lg:h-6 lg:w-6 -top-3 -right-3 text-white" />
           <Icon className="absolute h-4 w-4 sm:h-5 sm:w-5 lg:h-6 lg:w-6 -bottom-3 -right-3 text-white" />
-          <EvervaultCard username={sessionUsername} name={sessionName} src={sessionImage || '/Cover.jpg'} />
+          <EvervaultCard username={sessionUsername} name={currentUser?.name} src={currentUser?.profilepic || '/Cover.jpg'} />
         </div>
 
         <div className='relative flex items-center justify-between w-full gap-4 m-4 flex-col md:flex-row py-8'>
@@ -108,7 +119,7 @@ const Page = () => {
                 return <li key={index} className='px-2 flex gap-2 items-center'>
                   <img width={33} src="/Profile.gif" alt="user avatar" />
                   <span>
-                    {payment.name} donated <span className='font-bold'>₹{payment.amount}</span> with a message &quot;{payment.message}&quot;❤️🫡
+                    {payment?.name} donated <span className='font-bold'>₹{payment?.amount}</span> with a message &quot;{payment?.message}&quot;❤️🫡
                   </span>
                 </li>
               })}
@@ -128,12 +139,10 @@ const Page = () => {
                     </h1>
 
                     <p className="font-normal text-base text-slate-300 mb-4 relative z-50">
-                      I don&apos;t know what to write so I&apos;ll just paste something
-                      cool here. One more sentence because lorem ipsum is just
-                      unacceptable. Won&apos;t ChatGPT the shit out of this.
+                     {currentUser?.description}
                     </p>
                     <p className="font-normal text-base text-slate-300 mb-4 relative z-50">
-                    A total of {payments.length} payments have been made, raising an impressive ₹{payments.reduce((a, b) => a + b.amount, 0)}.
+                    A total of {payments?.length} payments have been made, raising an impressive ₹{payments.reduce((a, b) => a + b.amount, 0)}.
                     </p>
                     <Meteors number={30} />
             </div>

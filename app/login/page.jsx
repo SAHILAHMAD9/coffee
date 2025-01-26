@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { LampContainer } from "@/components/ui/LampDemo";
 import toast from "react-hot-toast";
+import { logInUser } from "@/actions/useractions";
 
 export default function page() {
     const { data: session } = useSession();
@@ -25,16 +26,36 @@ export default function page() {
             [name]: value,
         }));
     }
+    const username = session?.user?.username || localStorage.getItem('username');
 
     useEffect(() => {
         document.title = "Login - Get Me A COFFEE"
         // console.log(session)
-        if (session) {
+        if (username) {
             toast.success('Successfully Logged In!')
             router.push('/dashboard');
         }
-    }, [session])
-
+    }, [username])
+    
+const handleSummit = async (e) => {
+    e.preventDefault();
+    try {
+        let user = await logInUser(Form);
+        if (user.success) {
+                //   console.log("User created:", user);
+            const username = user?.user?.username;
+                localStorage.setItem("username", username);
+                toast.success('Successfully Logged In!!!');
+                //nagivate
+                router.push('/dashboard');
+        } else {
+            toast.error('Email or Password Incorrect!')
+            console.log("Email or Password Incorrect!");
+        }
+    } catch (error) {
+        console.log("Error in handleSummit:", error);
+    }
+}
     return (
             <div className="bg-black w-full min-h-screen flex flex-col justify-center items-center ">
                 <LampContainer className='pt-32 sm:pt-44 md:pt-44'>
@@ -56,7 +77,7 @@ export default function page() {
                                 Log In to Buy me a COFFEE
                             </p>
                             
-                            <form className="my-6 sm:my-8">
+                            <form onSubmit={handleSummit} className="my-6 sm:my-8">
                                 <LabelInputContainer className="mb-4">
                                     <Label className='text-white text-sm sm:text-base' htmlFor="email">Email Address</Label>
                                     <Input 

@@ -48,6 +48,7 @@ export const authoptions = NextAuth({
             existingUser = await User.create({
               name: user.name,
               email: user.email,
+              profilepic: user.image,
               provider: "github",
               username: user.email.split('@')[0],
             });
@@ -63,6 +64,7 @@ export const authoptions = NextAuth({
             existingUser = await User.create({
               name: user.name,
               email: user.email,
+              coverpic: user.image,
               provider: "google",
               username: user.email.split('@')[0],
             });

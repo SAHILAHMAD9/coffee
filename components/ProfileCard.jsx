@@ -2,15 +2,14 @@
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
-import dbConnect from "@/db/dbConnect";
+
 
 export function ProfileCard({user}) {
   const router = useRouter();
   const backgroundImage = user.image || 'https://images.unsplash.com/photo-1544077960-604201fe74bc?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1651&q=80';
   
   const profileClick = () => {
-    // console.log(user);
+    console.log(user);
     router.push(`/paymentgateway/${user.username}`);
   } 
  
@@ -30,20 +29,20 @@ export function ProfileCard({user}) {
             height="100"
             width="100"
             alt="Avatar"
-            src={ "/Cover.jpg"}
+            src={user?.profilepic || "/Cover.jpg"}
             className="h-10 w-10 rounded-full border-2 object-cover" />
           <div className="flex flex-col">
             <p className="font-normal text-base text-gray-50 relative z-10">
-              {user.username}
+              {user.name}
             </p>
           </div>
         </div>
         <div className="text content">
           <h1 className="font-bold text-xl md:text-2xl text-gray-50 relative z-10">
-            {user.name}
+            {user.role}
           </h1>
-          <p className="font-normal text-sm text-gray-50 w-[212px] sm:w-[288px] relative z-10 my-4">
-            Card with developer description, let them complete name and description from dashboard section to view details.
+          <p className="font-normal text-sm text-gray-50 w -[21 2px] sm:w- [28 8px] relative z-10 my-4 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200">
+          {user.description}
           </p>
         </div>
       </div>

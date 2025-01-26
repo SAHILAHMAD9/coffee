@@ -15,31 +15,23 @@ const page = () => {
     const { data: session , update ,status} = useSession();
     const router = useRouter();
     const [Form, setForm] = useState({
-        name: "",
-        email: "",
-        username: "",
-        profilepic: "",
-        coverpic: "",
-        role: "",
-        description: "",
+        name:"",
+        email:"",
+        username:"",
+        profilepic:"",
+        coverpic:"",
+        role:"",
+        description:"Experienced Software Engeneer combining creativity and technical expertise in modern technologies, delivering scalable, innovative solutions that enhance user experiences and solve challenging problems through clean, maintainable code",
     })
-    // const username = session?.user?.username;
+    const username = session?.user?.username || localStorage.getItem('username');
     
     useEffect(() => {
-        document.title = "Dashboard - Get Me A COFFEE"
-        if (!session) {
-            toast.error("Login First!")
-            // toast.error("Login First! from dashboard")
-            router.push('/');
-        }
+        async function  getData(){
+            let user = await fetchUser(username);
+            setForm(user);
+            }
         getData();
-    }, [session,status]);
-
-async function  getData(){
-    const username = session?.user?.username;
-    let user = await fetchUser(username);
-    setForm(user);
-    }
+    }, [session])
 
     function changeHandler(event) {
         const { name, value } = event.target;
@@ -49,12 +41,39 @@ async function  getData(){
         }));
     }
 const submitHandler = async (e) => {
+    if (Form.role == "") {
+        toast('Please enter a valid Message!', {
+          icon: '👏',
+        });
+        return;
+      }
         update();
-        const username = session?.user?.username;
         let user = await profileUpdate(e,username);
+        // console.log(user);
+        localStorage.setItem('username',user?.user?.username)
         router.push('/home');
         toast.success("Profile Updated Successfully!!")
     }
+    useEffect(() => {
+        document.title = "Dashboard - Get Me A COFFEE"
+        if (!username) {
+            toast.error("Login Again!")
+            // toast.error("Login First! from dashboard")
+            router.push('/');
+        }
+    }, []);
+
+    useEffect(() => {
+        document.title = "Dashboard - Get Me A COFFEE"
+        const checkAuth = async () => {
+        await new Promise(resolve => setTimeout(resolve, 500));
+            if (!username) {
+                toast.error("Login Again!")
+                router.push('/');
+            }
+        checkAuth();
+       }
+      },[session, router]);
     return (
         <div className="bg-black w-full min-h-screen flex justify-center items-center ">
             <LampContainer className='pt-40 sm:pt-44 md:pt-44 '>
@@ -79,31 +98,31 @@ const submitHandler = async (e) => {
                         <form action={submitHandler} className="my-8 " >
                             <LabelInputContainer className="mb-4">
                                 <Label className='text-white' htmlFor="name">Your Name</Label>
-                                <Input onChange={changeHandler} name="name" value={Form.name} id="name" placeholder="SAHIL AHMAD" type="text" autoComplete="new-name" />
+                                <Input onChange={changeHandler} name="name" value={Form?.name} id="name" placeholder="SAHIL AHMAD" type="text" autoComplete="new-name" />
                             </LabelInputContainer>
                             <LabelInputContainer className="mb-4">
                                 <Label className='text-white' htmlFor="email">Email Address</Label>
-                                <Input onChange={changeHandler} name="email" value={Form.email} id="email" placeholder="sahilahmad3504@gmail.com" type="email" autoComplete="new-email" ></Input>
+                                <Input onChange={changeHandler} name="email" value={Form?.email} id="email" placeholder="sahilahmad3504@gmail.com" type="email" autoComplete="new-email" ></Input>
                             </LabelInputContainer>
                             <LabelInputContainer className="mb-4">
                                 <Label className='text-white' htmlFor="username">Username</Label>
-                                <Input onChange={changeHandler} name="username" value={Form.username} id="username" placeholder="@sahilahmad3504" type="text" autoComplete="new-username" />
+                                <Input onChange={changeHandler} name="username" value={Form?.username} id="username" placeholder="@sahilahmad3504" type="text" autoComplete="new-username" />
                             </LabelInputContainer>
                             <LabelInputContainer className="mb-4">
                                 <Label className='text-white' htmlFor="profilepic">Profile Picture URL</Label>
-                                <Input onChange={changeHandler} name="profilepic" value={Form.profilepic} id="profilepic" placeholder="https//sahilAhmadProfileURL.com" type="text" autoComplete="new-profile" />
+                                <Input onChange={changeHandler} name="profilepic" value={Form?.profilepic} id="profilepic" placeholder="https//sahilAhmadProfileURL.com" type="text" autoComplete="new-profile" />
                             </LabelInputContainer>
                             <LabelInputContainer className="mb-4">
                                 <Label className='text-white' htmlFor="coverpic">Cover Pic URL</Label>
-                                <Input onChange={changeHandler} name="coverpic" value={Form.coverpic} id="coverpic" placeholder="https//sahilAhmadCoverURL.com" type="text" autoComplete="new-cover" />
+                                <Input onChange={changeHandler} name="coverpic" value={Form?.coverpic} id="coverpic" placeholder="https//sahilAhmadCoverURL.com" type="text" autoComplete="new-cover" />
                             </LabelInputContainer>
                             <LabelInputContainer className="mb-4">
                                 <Label className='text-white' htmlFor="role">Role</Label>
-                                <Input onChange={changeHandler} name="role" value={Form.role} id="role" placeholder="WEB DEVELOPER" type="text" autoComplete="new-razorpayID" />
+                                <Input onChange={changeHandler} name="role" value={Form?.role} id="role" placeholder="WEB DEVELOPER" type="text" autoComplete="new-razorpayID" />
                             </LabelInputContainer>
                             <LabelInputContainer className="mb-4">
                                 <Label className='text-white' htmlFor="description">Aboute Yourself</Label>
-                                <Input onChange={changeHandler} name="description" value={Form.description} id="description" placeholder="I am a FULLSTACK developer......." type="text" autoComplete="new-razorpaySecret" />
+                                <Input onChange={changeHandler} name="description" value={Form?.description} id="description" placeholder="I am a FULLSTACK developer......." type="text" autoComplete="new-razorpaySecret" />
                             </LabelInputContainer>
 
                             <button

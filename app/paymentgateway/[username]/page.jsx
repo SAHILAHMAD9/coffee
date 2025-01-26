@@ -13,7 +13,6 @@ import toast from 'react-hot-toast';
 import { Meteors } from '@/components/ui/Meteors';
 
 const Page = ({ params }) => {
-  const { data: session } = useSession();
   const router = useRouter();
   const searchParams = useSearchParams()
   const resolvedParams = use(params);
@@ -131,7 +130,7 @@ const Page = ({ params }) => {
       {/* Cover Image Container */}
       <div className='absolute top-0 w-full p-2 sm:p-4 h-[250px] sm:h-[350px] lg:h-[450px]'>
         <img
-          src={'/Cover.jpg'}
+          src={currentUser?.coverpic || '/Cover.jpg'}
           className='w-full h-full rounded-lg sm:rounded-xl lg:rounded-2xl object-cover'
           alt='Cover image'
         />
@@ -147,7 +146,7 @@ const Page = ({ params }) => {
           <Icon className="absolute h-4 w-4 sm:h-5 sm:w-5 lg:h-6 lg:w-6 -bottom-3 -left-3 text-white" />
           <Icon className="absolute h-4 w-4 sm:h-5 sm:w-5 lg:h-6 lg:w-6 -top-3 -right-3 text-white" />
           <Icon className="absolute h-4 w-4 sm:h-5 sm:w-5 lg:h-6 lg:w-6 -bottom-3 -right-3 text-white" />
-          <EvervaultCard username={username} name={currentUser.name} src={currentUser.image || '/Cover.jpg'} />
+          <EvervaultCard username={username} name={currentUser?.name} src={currentUser?.profilepic || '/Cover.jpg'} />
         </div>
         {loading && <p>Loading...</p>}
         {/* Payment Form */}

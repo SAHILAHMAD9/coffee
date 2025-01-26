@@ -62,10 +62,13 @@ export const profileUpdate = async ( data , oldUsername ) => {
             const u = await User.findOne({username : newData.username});
             if (u) {
                 console.log('username alredy exist');
-                return { error: "Username already exists" }
+                return { success: false, message: "Username already exists" }
             }
             await User.updateOne({email: newData.email},newData)
             await Payment.updateMany({to_user: oldUsername}, {to_user: newData.username})
+            const response = await User.findOne({username : newData.username});
+            let user = response.toObject({ flattenObjectIds: true });
+            return { user,success: true, message: "User updated successfully" };
         } else {
             await User.updateOne({email: newData.email}, newData) 
         }
@@ -75,3 +78,39 @@ export const profileUpdate = async ( data , oldUsername ) => {
         
     }
 }
+export const signUpUser = async (Form) => {
+    try {
+        await dbConnect();
+        const existingUser = await User.findOne({ email: Form.email });
+        if (!existingUser) {
+            const response = await User.create({
+                name: Form.firstname,
+                email: Form.email,
+                password: Form.password,
+                username: Form.email.split('@')[0],
+            });
+            // console.log("User created:", response);
+            let user = response.toObject({ flattenObjectIds: true });
+            return { user,success: true, message: "User created successfully" };
+        } else {
+            return { success: false, message: "User creation failed" };
+        }
+    } catch (error) {
+        console.log("An error occurred:", error);
+    }
+}
+
+export const logInUser = async (Form) => {
+    try {
+        await dbConnect();
+        const existingUser = await User.findOne({email : Form.email , password : Form.password});
+        if (existingUser) {
+            let user = existingUser.toObject({ flattenObjectIds: true });
+            return { user,success: true, message: "Logged In successfully" };
+        } else {
+            return { success: false, message: "Login fail failed" };
+        }
+    } catch (error) {
+        console.log("An error occurred:", error);
+    }
+} 

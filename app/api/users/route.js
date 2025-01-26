@@ -10,7 +10,7 @@ export async function GET() {
     console.log("Connected to database successfully");
     
     const users = await User.find().lean();
-    console.log("Fetched users:", users);
+    // console.log("Fetched users:", users);
     
     return NextResponse.json(users);
   } catch (error) {

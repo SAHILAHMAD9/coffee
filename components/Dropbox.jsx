@@ -3,14 +3,30 @@ import { useSession, signOut, signIn } from "next-auth/react";
 import Link from "next/link";
 import React, { useState ,useEffect} from "react";
 import toast from "react-hot-toast";
-import { useRouter } from "next/navigation";
+import { fetchUser } from "@/actions/useractions";
 
 export const Dropbox = () => {
   const { data: session } = useSession();
   const [showDropDown, setshowDropDown] = useState(false);
-  
+  const [currentUser, setcurrentUser] = useState({})
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+        const username = session?.user?.username || localStorage.getItem('username');
+        if (username) {
+            try {
+                const userData = await fetchUser(username);
+                setcurrentUser(userData);
+            } catch (error) {
+                console.error("Failed to fetch user data:", error);
+            }
+        }
+    };
+    fetchUserData();
+}, [session]);
+
   return (
-    <div className="h-full flex flex-col bg -black z- 20 min-w-50 gap-2  items-center rounded-full m-1 relative left-0 top-0 ">
+    <div className="h-full flex flex-col bg -black z-20 min-w-50 gap-2  items-center rounded-full m-1 relative left-0 top-0 ">
       <button
         onClick={() => setshowDropDown(!showDropDown)}
         id="dropdownAvatarNameButton"
@@ -21,10 +37,10 @@ export const Dropbox = () => {
         <span className="sr-only"></span>
         <img
           className="w-8 h-8 me-2 rounded-full"
-          src={session?.user?.image || 'profile.gif'}
+          src={currentUser?.profilepic  || 'profile.gif'}
           alt="user photo"
         />
-        <div className="flex items-center justify-center w-auto"> {session?.user?.name}</div>
+        <div className="flex items-center justify-center w-auto"> {currentUser?.name}</div>
         <svg
           className="w-2.5 h-2.5 ms-3"
           aria-hidden="true"
@@ -54,7 +70,7 @@ export const Dropbox = () => {
       >
         <div className="px-4 py-3 text-sm text-white">
           <div className="font-medium">Pro User</div>
-          <div className="truncate">{session?.user?.email}</div>
+          <div className="truncate">{currentUser?.email}</div>
         </div>
         <ul
           className="py- text-md text-gray-200"
@@ -80,6 +96,7 @@ export const Dropbox = () => {
               onClick={() => {
                 signOut()
                 toast.success('Successfully Logged Out')
+                localStorage.clear()
                 }}
               className="block px-4 py-2  text-xl fo nt-semibold hover:bg-gray-600 hover:rounded-sm hover:text-white"
             >
