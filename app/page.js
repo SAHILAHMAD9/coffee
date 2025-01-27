@@ -9,7 +9,6 @@ import {
   TextRevealCardTitle,
 } from "@/components/ui/TextRevealingCard.jsx";
 import { cn } from "@/lib/utils";
-import { Card } from "@/components/ui/card";
 import { Coffee, Heart, Star } from "lucide-react";
 import AnimatedButton from "@/components/ui/AnimateButton";
 import Link from "next/link";
@@ -118,13 +117,13 @@ function App() {
                 description: "Focus on creating while we handle the rest"
               }
             ].map((benefit, index) => (
-              <Card key={index} className="p-6 bg-gradient-to-br from-gray-900 to-gray-800 border-gray-700 hover:border-gray-600 transition-all duration-300">
+              <div key={index} className="p-6 rounded-xl border bg-card text-card-foreground shadow bg-gradient-to-br from-gray-900 to-gray-800 border-gray-700 hover:border-gray-600 transition-all duration-300">
                 <div className="flex flex-col items-center text-center">
                   {benefit.icon}
                   <h3 className="mt-4 text-xl font-semibold text-white">{benefit.title}</h3>
                   <p className="mt-2 text-gray-400">{benefit.description}</p>
                 </div>
-              </Card>
+              </div>
             ))}
           </div>
         </div>

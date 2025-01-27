@@ -32,7 +32,7 @@ export const Dropbox = () => {
     router.push('/');
     toast.success('Successfully Logged Out');
     storage.clear();
-    setUsername(null);
+    setcurrentUser(null);
   }
   
   return (
