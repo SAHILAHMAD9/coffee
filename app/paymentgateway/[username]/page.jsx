@@ -83,7 +83,7 @@ const Page = ({ params }) => {
         "description": "Test Transaction",
         "image": "https://example.com/your_logo",
         "order_id": orderId,
-        "callback_url": `${process.env.NEXT_PUBLIC_URL}/api/razorpay`,
+        "callback_url": `https://buy-coffee-sable.vercel.app/api/razorpay`,
         "prefill": { //We recommend using the prefill parameter to auto-fill customer's contact information especially their phone number
           "name": "SAHIL AHMAD",
           "email": "sahilahmad3504@gmail.com",
