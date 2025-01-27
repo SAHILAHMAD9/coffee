@@ -13,11 +13,13 @@ import { motion } from "framer-motion";
 import { LampContainer } from "@/components/ui/LampDemo";
 import toast from "react-hot-toast";
 import { signUpUser } from "@/actions/useractions";
+import { storage } from "@/utils/localstorage";
 
 
 export default function page() {
     const { data: session } = useSession();
     const router = useRouter();
+    const [username, setUsername] = useState(null);
     const [Form, setForm] = useState({
         firstname: "",
         lastname: "",
@@ -32,7 +34,10 @@ export default function page() {
         }));
     }
 
-    const username = session?.user?.username || localStorage.getItem('username');
+    useEffect(() => {
+        setUsername(session?.user?.username || storage.get('username'));
+    }, [session, username]);
+
 
     useEffect(() => {
         document.title = "SignUp - Get Me A COFFEE"
@@ -50,7 +55,7 @@ export default function page() {
             if (user.success) {
                 // console.log("User created:", user);
                 const username = user?.user?.username;
-                localStorage.setItem("username", username);
+                storage.set("username", username);
                 toast.success('Successfully Signed Up!!!');
                 //nagivate
                 router.push('/dashboard');

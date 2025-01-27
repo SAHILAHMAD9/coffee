@@ -74,12 +74,12 @@ export const TextRevealCard = ({
           animate={
             isMouseOver
               ? {
-                  opacity: widthPercentage > 0 ? 1 : 0,
-                  clipPath: `inset(0 ${100 - widthPercentage}% 0 0)`,
-                }
+                opacity: widthPercentage > 0 ? 1 : 0,
+                clipPath: `inset(0 ${100 - widthPercentage}% 0 0)`,
+              }
               : {
-                  clipPath: `inset(0 ${100 - widthPercentage}% 0 0)`,
-                }
+                clipPath: `inset(0 ${100 - widthPercentage}% 0 0)`,
+              }
           }
           transition={isMouseOver ? { duration: 0 } : { duration: 0.4 }}
           className="absolute bg-[#1d1c20] z-20  will-change-transform">

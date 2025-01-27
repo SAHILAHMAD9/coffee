@@ -1,9 +1,10 @@
 'use client'
 import { useSession, signOut, signIn } from "next-auth/react";
 import Link from "next/link";
-import React, { useState ,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import { fetchUser } from "@/actions/useractions";
+import { storage } from "@/utils/localstorage";
 
 export const Dropbox = () => {
   const { data: session } = useSession();
@@ -12,27 +13,28 @@ export const Dropbox = () => {
 
   useEffect(() => {
     const fetchUserData = async () => {
-        const username = session?.user?.username || localStorage.getItem('username');
-        if (username) {
-            try {
-              await new Promise(resolve => setTimeout(resolve, 200));
-                const userData = await fetchUser(username);
-                setcurrentUser(userData);
-            } catch (error) {
-                console.error("Failed to fetch user data:", error);
-            }
+      const username = session?.user?.username || storage.get('username');
+      if (username) {
+        try {
+          await new Promise(resolve => setTimeout(resolve, 200));
+          const userData = await fetchUser(username);
+          setcurrentUser(userData);
+        } catch (error) {
+          console.error("Failed to fetch user data:", error);
         }
+      }
     };
     fetchUserData();
-}, [session]);
-
-const logoutHandler = async () => {
- await signOut();
-  router.push('/');
-  toast.success('Successfully Logged Out');
-  localStorage.clear();
-}
-
+  }, [session]);
+  
+  const logoutHandler = async () => {
+    await signOut()
+    router.push('/');
+    toast.success('Successfully Logged Out');
+    storage.clear();
+    setUsername(null);
+  }
+  
   return (
     <div className="h-full flex flex-col bg -black z-20 min-w-50 gap-2  items-center rounded-full m-1 relative left-0 top-0 ">
       <button
@@ -45,7 +47,7 @@ const logoutHandler = async () => {
         <span className="sr-only"></span>
         <img
           className="w-8 h-8 me-2 rounded-full"
-          src={currentUser?.profilepic  || 'profile.gif'}
+          src={currentUser?.profilepic || 'profile.gif'}
           alt="user photo"
         />
         <div className="flex items-center justify-center w-auto"> {currentUser?.name}</div>

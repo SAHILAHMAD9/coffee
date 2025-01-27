@@ -54,28 +54,28 @@ export const fetchpayments = async (username) => {
     }
 }
 
-export const profileUpdate = async ( data , oldUsername ) => {
+export const profileUpdate = async (data, oldUsername) => {
     try {
         await dbConnect()
         let newData = Object.fromEntries(data);
         if (oldUsername !== newData.username) {
-            const u = await User.findOne({username : newData.username});
+            const u = await User.findOne({ username: newData.username });
             if (u) {
                 console.log('username alredy exist');
                 return { success: false, message: "Username already exists" }
             }
-            await User.updateOne({email: newData.email},newData)
-            await Payment.updateMany({to_user: oldUsername}, {to_user: newData.username})
-            const response = await User.findOne({username : newData.username});
+            await User.updateOne({ email: newData.email }, newData)
+            await Payment.updateMany({ to_user: oldUsername }, { to_user: newData.username })
+            const response = await User.findOne({ username: newData.username });
             let user = response.toObject({ flattenObjectIds: true });
-            return { user,success: true, message: "User updated successfully" };
+            return { user, success: true, message: "User updated successfully" };
         } else {
-            await User.updateOne({email: newData.email}, newData) 
+            await User.updateOne({ email: newData.email }, newData)
         }
 
     } catch (error) {
         console.log('error in profile update useraction');
-        
+
     }
 }
 export const signUpUser = async (Form) => {
@@ -91,7 +91,7 @@ export const signUpUser = async (Form) => {
             });
             // console.log("User created:", response);
             let user = response.toObject({ flattenObjectIds: true });
-            return { user,success: true, message: "User created successfully" };
+            return { user, success: true, message: "User created successfully" };
         } else {
             return { success: false, message: "User creation failed" };
         }
@@ -103,10 +103,10 @@ export const signUpUser = async (Form) => {
 export const logInUser = async (Form) => {
     try {
         await dbConnect();
-        const existingUser = await User.findOne({email : Form.email , password : Form.password});
+        const existingUser = await User.findOne({ email: Form.email, password: Form.password });
         if (existingUser) {
             let user = existingUser.toObject({ flattenObjectIds: true });
-            return { user,success: true, message: "Logged In successfully" };
+            return { user, success: true, message: "Logged In successfully" };
         } else {
             return { success: false, message: "Login fail failed" };
         }

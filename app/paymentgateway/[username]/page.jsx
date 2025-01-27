@@ -119,7 +119,7 @@ const Page = ({ params }) => {
     let payment = await fetchpayments(username);
     setPayments(payment);
   }
-// console.log(currentUser);
+  // console.log(currentUser);
 
   useEffect(() => {
     getData();
@@ -212,7 +212,7 @@ const Page = ({ params }) => {
                   onClick={(e) => {
                     e.preventDefault();
                     pay(Number.parseInt(paymentForm.amount) * 100)
-                    }}
+                  }}
                   className="bg-gradient-to-br relative group/btn from-zinc-900 to-zinc-900 block bg-zinc-800 w-full text-white rounded-md h-9 sm:h-10 font-medium text-sm sm:text-base shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]">
                   Pay &rarr;
                   <BottomGradient />

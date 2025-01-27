@@ -8,27 +8,30 @@ import { cn } from "@/lib/utils";
 import toast from 'react-hot-toast';
 import { fetchpayments, fetchUser, initiate } from '@/actions/useractions';
 import { Meteors } from '@/components/ui/Meteors';
+import { storage } from '@/utils/localstorage';
 
 const Page = () => {
   const { data: session } = useSession();
   const router = useRouter()
+  const [sessionUsername, setUsername] = useState(null);
   const [users, setUsers] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [payments, setPayments] = useState([])
   const [currentUser, setcurrentUser] = useState({
-    name:"",
-    email:"",
-    username:"",
-    profilepic:"",
-    coverpic:"",
-    role:"",
-    description:""
+    name: "",
+    email: "",
+    username: "",
+    profilepic: "",
+    coverpic: "",
+    role: "",
+    description: ""
   })
-  const sessionUsername = session?.user?.username || localStorage.getItem('username');
   // const sessionName = session?.user?.name || currentUser.name;
   // const sessionImage = session?.user?.image || currentUser.image;
-
+  useEffect(() => {
+    setUsername(session?.user?.username || storage.get('username'));
+  }, [session, sessionUsername]);
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -59,30 +62,30 @@ const Page = () => {
     fetchUsers();
   }, []);
   // console.log(users);
-  
-useEffect(() => {
-  const getData = async () =>  {
-    let user = await fetchUser(sessionUsername);
-    setcurrentUser(user);
-    let payment = await fetchpayments(sessionUsername);
-    setPayments(payment);
-  };
-  getData();
-},[session,sessionUsername])
-  
+
+  useEffect(() => {
+    const getData = async () => {
+      let user = await fetchUser(sessionUsername);
+      setcurrentUser(user);
+      let payment = await fetchpayments(sessionUsername);
+      setPayments(payment);
+    };
+    getData();
+  }, [session, sessionUsername])
+
   // console.log(currentUser);
 
   useEffect(() => {
     document.title = "Home - Get Me A COFFEE"
     const checkAuth = async () => {
-    await new Promise(resolve => setTimeout(resolve, 200));
-        if (!sessionUsername || !session) {
-            toast.error("Login Again!")
-            router.push('/');
-        }
-    checkAuth();
-   }
-  },[session, router,sessionUsername]);
+      await new Promise(resolve => setTimeout(resolve, 200));
+      if (!sessionUsername || !session) {
+        toast.error("Login Again!")
+        router.push('/');
+      }
+      checkAuth();
+    }
+  }, [sessionUsername]);
 
   return (
     <div className="bg-black w-full min-h-screen flex flex-col justify-center relative items-center text-white">
@@ -138,17 +141,17 @@ useEffect(() => {
             <div className="absolute inset-0 w-full h-full bg-slate-900 z-20 [mask-image:radial-gradient(transparent,white)] pointer-even ts-none" />
 
             <div className="mx-auto flex  flex-col items-center justify-center relative z-20 w-full h-full   p-4 md:px-8 ">
-            <h1 className="font-bold text-2xl md:text-4xl text-white pb-8 relative z-50">
-                     About Me
-                    </h1>
+              <h1 className="font-bold text-2xl md:text-4xl text-white pb-8 relative z-50">
+                About Me
+              </h1>
 
-                    <p className="font-normal text-center text-base text-slate-300 mb-4 relative z-50">
-                     {currentUser?.description}
-                    </p>
-                    <p className="font-normal text-base text-slate-300 mb-4 relative z-50">
-                    A total of {payments?.length} payments have been made, raising an impressive ₹{payments.reduce((a, b) => a + b.amount, 0)}.
-                    </p>
-                    <Meteors number={30} />
+              <p className="font-normal text-center text-base text-slate-300 mb-4 relative z-50">
+                {currentUser?.description}
+              </p>
+              <p className="font-normal text-base text-slate-300 mb-4 relative z-50">
+                A total of {payments?.length} payments have been made, raising an impressive ₹{payments.reduce((a, b) => a + b.amount, 0)}.
+              </p>
+              <Meteors number={30} />
             </div>
 
 

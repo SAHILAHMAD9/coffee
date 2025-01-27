@@ -40,9 +40,9 @@ export const authoptions = NextAuth({
       try {
         await dbConnect();
         if (account.provider === "github") {
-          let existingUser = await User.findOne({ 
+          let existingUser = await User.findOne({
             email: user.email,
-            provider : "github",
+            provider: "github",
           });
           if (!existingUser) {
             existingUser = await User.create({
@@ -52,14 +52,14 @@ export const authoptions = NextAuth({
               provider: "github",
               username: user.email.split('@')[0],
             });
-        }
+          }
         }
         if (account.provider === "google") {
-          let existingUser = await User.findOne({ 
+          let existingUser = await User.findOne({
             email: user.email,
-            provider : "google",
+            provider: "google",
           });
-  
+
           if (!existingUser) {
             existingUser = await User.create({
               name: user.name,
@@ -68,9 +68,9 @@ export const authoptions = NextAuth({
               provider: "google",
               username: user.email.split('@')[0],
             });
+          }
         }
-      }
-      return true;
+        return true;
       } catch (error) {
         console.error('Sign in error:', error);
         if (error.code === 11000) {
@@ -81,14 +81,14 @@ export const authoptions = NextAuth({
       }
     },
     async session({ session, user, token }) {
-      const gitUser = await User.findOne({email: session.user.email , provider : "github" });
-      const googleUser = await User.findOne({email : session.user.email , provider : "google" });
+      const gitUser = await User.findOne({ email: session.user.email, provider: "github" });
+      const googleUser = await User.findOne({ email: session.user.email, provider: "google" });
       if (gitUser) {
         session.user.name = gitUser.name;
         session.user.username = gitUser.username;
         session.user.provider = "github";
-      } 
-      if(googleUser) {
+      }
+      if (googleUser) {
         session.user.name = googleUser.name
         session.user.username = googleUser.username;
         session.user.provider = "google";

@@ -10,26 +10,31 @@ import { LampContainer } from "@/components/ui/LampDemo";
 import Link from 'next/link';
 import toast from 'react-hot-toast';
 import { fetchUser, profileUpdate } from '@/actions/useractions';
+import { storage } from '@/utils/localstorage';
 
 const page = () => {
-    const { data: session , update ,status} = useSession();
+    const { data: session, update, status } = useSession();
     const router = useRouter();
-    const username = session?.user?.username || localStorage.getItem('username');
-    const [Form, setForm] = useState({
-        name:"",
-        email:"",
-        username:"",
-        profilepic:"",
-        coverpic:"",
-        role:"",
-        description:"Experienced Software Engeneer combining creativity and technical expertise in modern technologies, delivering scalable, innovative solutions that enhance user experiences and solve challenging problems through clean, maintainable code",
-    })
-    
+    const [username, setUsername] = useState(null);
     useEffect(() => {
-        async function  getData(){
+        setUsername(session?.user?.username || storage.get('username'));
+    }, [session, username]);
+
+    const [Form, setForm] = useState({
+        name: "",
+        email: "",
+        username: "",
+        profilepic: "",
+        coverpic: "",
+        role: "",
+        description: "Experienced Software Engeneer combining creativity and technical expertise in modern technologies, delivering scalable, innovative solutions that enhance user experiences and solve challenging problems through clean, maintainable code",
+    })
+
+    useEffect(() => {
+        async function getData() {
             let user = await fetchUser(username);
             setForm(user);
-            }
+        }
         getData();
     }, [session])
 
@@ -40,17 +45,19 @@ const page = () => {
             [name]: value,
         }));
     }
-const submitHandler = async (e) => {
-    if (Form.role === "") {
-        toast('Please enter a valid Message!', {
-          icon: '👏',
-        });
-        return;
-      }
+    const submitHandler = async (e) => {
+        if (Form.role === "") {
+            toast('Please enter a valid Message!', {
+                icon: '👏',
+            });
+            return;
+        }
         update();
-        let user = await profileUpdate(e,username);
+        let user = await profileUpdate(e, username);
         // console.log(user);
-        localStorage.setItem('username',user?.user?.username)
+        if (typeof window !== 'undefined') {
+            storage.set('username', user?.user?.username);
+        }
         router.push('/home');
         toast.success("Profile Updated Successfully!!")
     }
@@ -58,14 +65,14 @@ const submitHandler = async (e) => {
     useEffect(() => {
         document.title = "Dashboard - Get Me A COFFEE"
         const checkAuth = async () => {
-        await new Promise(resolve => setTimeout(resolve, 500));
+            await new Promise(resolve => setTimeout(resolve, 500));
             if (!username) {
                 toast.error("Login Again!")
                 router.push('/');
             }
-        checkAuth();
-       }
-      },[session, router,username]);
+            checkAuth();
+        }
+    }, [username]);
     return (
         <div className="bg-black w-full min-h-screen flex justify-center items-center ">
             <LampContainer className='pt-40 sm:pt-44 md:pt-44 '>

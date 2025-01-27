@@ -1,21 +1,27 @@
 "use client"
 import Link from 'next/link'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSession, signIn, signOut } from 'next-auth/react'
 import { Dropbox } from './Dropbox'
 import toast from 'react-hot-toast'
 import { useRouter } from 'next/navigation'
+import { storage } from '@/utils/localstorage'
 
 export const Navbar = () => {
   const { data: session } = useSession();
   const router = useRouter()
-  const username = session?.user?.username || localStorage.getItem('username');
+  const [username, setUsername] = useState(null);
+
+  useEffect(() => {
+    setUsername(session?.user?.username || storage.get('username'));
+  }, [session,username,storage]);
 
   const logoutHandler = async () => {
-     await signOut()
-     router.push('/');
-     toast.success('Successfully Logged Out');
-    localStorage.clear();
+    await signOut()
+    router.push('/');
+    toast.success('Successfully Logged Out');
+    storage.clear();
+    setUsername(null);
   }
 
   return (
