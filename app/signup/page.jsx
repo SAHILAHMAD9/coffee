@@ -77,7 +77,7 @@ export default function page() {
                 >
                     <div
                         className=" w-full mx-auto rounded-2xl p-4 md:p-8 shadow-input bg-black">
-                        <h2 className="font-bold text-2xl text-neutral-200">
+                        <h2 className="font-bold font-mono text-2xl text-neutral-200">
                             Welcome
                         </h2>
                         <p className=" text-sm max-w-sm mt-2 text-neutral-300">

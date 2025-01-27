@@ -1,6 +1,7 @@
 "use client"
 import { Boxes } from "@/components/ui/BackgroundBoxes";
 import DotPattern from "@/components/ui/DotPattern";
+import { Meteors } from "@/components/ui/Meteors";
 import { Spotlight } from "@/components/ui/Spotlight";
 import {
   TextRevealCard,
@@ -39,7 +40,7 @@ export default function Home() {
             text="You know the business"
             revealText="I know the chemistry "
           >
-            <TextRevealCardTitle>
+            <TextRevealCardTitle className='font-mono font-semibold text-xl'>
               A crowdfunding platform for creators to fund their projects.
             </TextRevealCardTitle>
             <TextRevealCardDescription>
@@ -54,8 +55,8 @@ export default function Home() {
 
         <div className="h-96 relative w-full overflow-hidden bg-black flex flex-col items-center justify-center rounded-lg">
           <div className="absolute inset-0 w-full h-full bg-slate-900 z-20 [mask-image:radial-gradient(transparent,white)] pointer-events-none" />
-
-          <Boxes />
+          <Meteors number={30} />
+          {/* <Boxes /> */}
           <img className="bg-slate-400 relative rounded-full p-2 mb-4 text-black" width={88} src="Man.gif" alt="" />
           <h1 className={cn("md:text-4xl text-xl text-white relative z-20")}>
             Fans want to help
@@ -69,8 +70,8 @@ export default function Home() {
 
         <div className="h-96 relative w-full overflow-hidden bg-black flex flex-col items-center justify-center rounded-lg">
           <div className="absolute inset-0 w-full h-full bg-slate-900 z-20 [mask-image:radial-gradient(transparent,white)] pointer-events-none" />
-
-          <Boxes />
+          <Meteors number={30} />
+          {/* <Boxes /> */}
           <img className="bg-slate-400 relative rounded-full p-2 mb-4 text-black" width={88} src="Coin.gif" alt="" />
           <h1 className={cn("md:text-4xl text-xl text-white relative z-20")}>
             Fans want to contribute
@@ -84,8 +85,8 @@ export default function Home() {
 
         <div className="h-96 relative w-full overflow-hidden bg-black flex flex-col items-center justify-center rounded-lg">
           <div className="absolute inset-0 w-full h-full bg-slate-900 z-20 [mask-image:radial-gradient(transparent,white)] pointer-events-none" />
-
-          <Boxes />
+          <Meteors number={30} />
+          {/* <Boxes /> */}
           <img className="bg-slate-400 relative rounded-full p-2 mb-4 text-black" width={88} src="Group.gif" alt="" />
           <h1 className={cn("md:text-4xl text-xl text-white relative z-20")}>
             Fans want to collaborate

@@ -14,6 +14,7 @@ import { fetchUser, profileUpdate } from '@/actions/useractions';
 const page = () => {
     const { data: session , update ,status} = useSession();
     const router = useRouter();
+    const username = session?.user?.username || localStorage.getItem('username');
     const [Form, setForm] = useState({
         name:"",
         email:"",
@@ -23,7 +24,6 @@ const page = () => {
         role:"",
         description:"Experienced Software Engeneer combining creativity and technical expertise in modern technologies, delivering scalable, innovative solutions that enhance user experiences and solve challenging problems through clean, maintainable code",
     })
-    const username = session?.user?.username || localStorage.getItem('username');
     
     useEffect(() => {
         async function  getData(){
@@ -41,7 +41,7 @@ const page = () => {
         }));
     }
 const submitHandler = async (e) => {
-    if (Form.role == "") {
+    if (Form.role === "") {
         toast('Please enter a valid Message!', {
           icon: '👏',
         });
@@ -54,14 +54,6 @@ const submitHandler = async (e) => {
         router.push('/home');
         toast.success("Profile Updated Successfully!!")
     }
-    useEffect(() => {
-        document.title = "Dashboard - Get Me A COFFEE"
-        if (!username) {
-            toast.error("Login Again!")
-            // toast.error("Login First! from dashboard")
-            router.push('/');
-        }
-    }, []);
 
     useEffect(() => {
         document.title = "Dashboard - Get Me A COFFEE"
@@ -73,7 +65,7 @@ const submitHandler = async (e) => {
             }
         checkAuth();
        }
-      },[session, router]);
+      },[session, router,username]);
     return (
         <div className="bg-black w-full min-h-screen flex justify-center items-center ">
             <LampContainer className='pt-40 sm:pt-44 md:pt-44 '>

@@ -180,7 +180,7 @@ const Page = ({ params }) => {
             <div className="absolute inset-0 w-full h-full bg-slate-900 z-20 [mask-image:radial-gradient(transparent,white)] pointer-even ts-none" />
 
             <div className="mx-auto relative z-20 w-full h-full border border-slate-900  p-4 md:px-8 shadow-input bg- black">
-              <h2 className="font-bold text-xl sm:text-2xl text-neutral-200">
+              <h2 className="font-bold text-xl font-mono sm:text-2xl text-neutral-200">
                 Make a Payment
               </h2>
               <form className="my-6 sm:my-8">

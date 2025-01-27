@@ -15,6 +15,7 @@ export const Dropbox = () => {
         const username = session?.user?.username || localStorage.getItem('username');
         if (username) {
             try {
+              await new Promise(resolve => setTimeout(resolve, 200));
                 const userData = await fetchUser(username);
                 setcurrentUser(userData);
             } catch (error) {
@@ -24,6 +25,13 @@ export const Dropbox = () => {
     };
     fetchUserData();
 }, [session]);
+
+const logoutHandler = async () => {
+ await signOut();
+  router.push('/');
+  toast.success('Successfully Logged Out');
+  localStorage.clear();
+}
 
   return (
     <div className="h-full flex flex-col bg -black z-20 min-w-50 gap-2  items-center rounded-full m-1 relative left-0 top-0 ">
@@ -93,11 +101,7 @@ export const Dropbox = () => {
           </li>
           <li>
             <div
-              onClick={() => {
-                signOut()
-                toast.success('Successfully Logged Out')
-                localStorage.clear()
-                }}
+              onClick={logoutHandler}
               className="block px-4 py-2  text-xl fo nt-semibold hover:bg-gray-600 hover:rounded-sm hover:text-white"
             >
               Log Out

@@ -39,8 +39,10 @@ export default function page() {
     
 const handleSummit = async (e) => {
     e.preventDefault();
+    const loadingToast = toast.loading('Logging in...');
     try {
         let user = await logInUser(Form);
+        toast.dismiss(loadingToast);
         if (user.success) {
                 //   console.log("User created:", user);
             const username = user?.user?.username;
@@ -49,6 +51,7 @@ const handleSummit = async (e) => {
                 //nagivate
                 router.push('/dashboard');
         } else {
+            toast.dismiss(loadingToast);
             toast.error('Email or Password Incorrect!')
             console.log("Email or Password Incorrect!");
         }
@@ -70,7 +73,7 @@ const handleSummit = async (e) => {
                         className="relative md:mt-40 login bg-gradient-to-br from-slate-300 to-slate-500 rounded-2xl w-[20rem] sm:w-[28rem] md:w-[35rem] text-transparent"
                     >
                             <div className="mx-auto w-full rounded-2xl p-4 md:p-8 shadow-input bg-black">
-                            <h2 className="font-bold text-xl sm:text-2xl text-neutral-200">
+                            <h2 className="font-bold text-xl font-mono sm:text-2xl text-neutral-200">
                                 Welcome
                             </h2>
                             <p className="text-xs sm:text-sm max-w-sm mt-2 text-neutral-300">

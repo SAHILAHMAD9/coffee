@@ -5,10 +5,6 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import ProfileCard from '@/components/ProfileCard';
 import { cn } from "@/lib/utils";
-import Input from "@/components/ui/Input";
-import dbConnect from '@/db/dbConnect';
-import User from '@/models/User';
-import Link from 'next/link';
 import toast from 'react-hot-toast';
 import { fetchpayments, fetchUser, initiate } from '@/actions/useractions';
 import { Meteors } from '@/components/ui/Meteors';
@@ -20,7 +16,15 @@ const Page = () => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [payments, setPayments] = useState([])
-  const [currentUser, setcurrentUser] = useState({})
+  const [currentUser, setcurrentUser] = useState({
+    name:"",
+    email:"",
+    username:"",
+    profilepic:"",
+    coverpic:"",
+    role:"",
+    description:""
+  })
   const sessionUsername = session?.user?.username || localStorage.getItem('username');
   // const sessionName = session?.user?.name || currentUser.name;
   // const sessionImage = session?.user?.image || currentUser.image;
@@ -64,21 +68,21 @@ useEffect(() => {
     setPayments(payment);
   };
   getData();
-},[session])
+},[session,sessionUsername])
   
   // console.log(currentUser);
 
   useEffect(() => {
     document.title = "Home - Get Me A COFFEE"
     const checkAuth = async () => {
-    await new Promise(resolve => setTimeout(resolve, 500));
-        if (sessionUsername) {
+    await new Promise(resolve => setTimeout(resolve, 200));
+        if (!sessionUsername || !session) {
             toast.error("Login Again!")
             router.push('/');
         }
     checkAuth();
    }
-  },[session, router]);
+  },[session, router,sessionUsername]);
 
   return (
     <div className="bg-black w-full min-h-screen flex flex-col justify-center relative items-center text-white">
@@ -138,7 +142,7 @@ useEffect(() => {
                      About Me
                     </h1>
 
-                    <p className="font-normal text-base text-slate-300 mb-4 relative z-50">
+                    <p className="font-normal text-center text-base text-slate-300 mb-4 relative z-50">
                      {currentUser?.description}
                     </p>
                     <p className="font-normal text-base text-slate-300 mb-4 relative z-50">
