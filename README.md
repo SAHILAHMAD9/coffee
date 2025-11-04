@@ -1,6 +1,7 @@
 # coffee
 
 ![Next.js](https://img.shields.io/badge/-Next.js-blue?logo=nextjs&logoColor=white) ![React](https://img.shields.io/badge/-React-blue?logo=react&logoColor=white)
+
 Our platform is a community-driven crowdfunding website designed especially for developers, creators, and innovators. It allows supporters to contribute funds easily — helping developers continue building amazing projects, tools, and apps.
 With secure payment integrations, personalized creator pages, and real-time supporter messages, it’s never been easier to connect with your audience and grow sustainably.
 
