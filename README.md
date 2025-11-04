@@ -1,10 +1,8 @@
 # coffee
 
 ![Next.js](https://img.shields.io/badge/-Next.js-blue?logo=nextjs&logoColor=white) ![React](https://img.shields.io/badge/-React-blue?logo=react&logoColor=white)
-
-## 📝 Description
-
-Discover coffee, a modern web application built with Next.js and React, designed to elevate your coffee experience. This project seamlessly integrates API functionality, a robust database, and secure authentication to provide a feature-rich platform for coffee enthusiasts. Explore a wide range of features, from discovering new brews and roasters to managing your personal coffee collection and connecting with fellow coffee lovers. Coffee offers a comprehensive and engaging web experience for every step of your coffee journey.
+Our platform is a community-driven crowdfunding website designed especially for developers, creators, and innovators. It allows supporters to contribute funds easily — helping developers continue building amazing projects, tools, and apps.
+With secure payment integrations, personalized creator pages, and real-time supporter messages, it’s never been easier to connect with your audience and grow sustainably.
 
 ## ✨ Features
 
